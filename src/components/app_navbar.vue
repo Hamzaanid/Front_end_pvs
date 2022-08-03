@@ -1,6 +1,6 @@
 <template>
 <nav>
-    <v-app-bar dense clipped-right class="nvbar" app height="52px">
+    <v-app-bar dense clipped-right class="nvbar"  height="52px" app>
     <v-app-bar-nav-icon 
            @click="drawer = !drawer"
             ></v-app-bar-nav-icon>
@@ -38,6 +38,7 @@
           v-for="(item, i) in items"
           :key="i"
           router :to="item.route"
+          dense
         >
           <v-list-item-icon>
             <v-icon left v-text="item.action"></v-icon>
