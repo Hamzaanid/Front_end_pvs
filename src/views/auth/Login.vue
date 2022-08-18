@@ -17,12 +17,11 @@
       <v-card-text>
         <v-form ref="loginForm">
           <v-text-field
-            label="البريد اللالكتروني"
-            name="email"
-            type="email"
+            label="إسم المرور"
+            name="nom"
             dense
             prepend-inner-icon="mdi-email"
-            v-model="user.email"
+            v-model="user.nom"
           />
           <v-text-field
             id="password"
@@ -51,7 +50,7 @@ export default {
       msgErr: false,
       load: false,
       user: {
-        email: "",
+        nom: "",
         password: "",
       },
     };
@@ -70,6 +69,7 @@ export default {
           })
           .catch((er) => {
             this.msgErr = true;
+            console.log(er);
           });
       }
     },
