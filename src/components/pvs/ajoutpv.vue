@@ -58,34 +58,6 @@
         <v-row no-gutters dense class="ma-0 pa-0" justify-md="start">
           <v-col cols="12" sm="3" class="ml-2">
             <v-menu
-              v-model="menu1"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="pvs.datePvs"
-                  label="تاريخ المحضر"
-                  append-icon="mdi-calendar"
-                  clearable
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                  outlined
-                  dense
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="pvs.datePvs"
-                @input="menu1 = false"
-                no-title
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="12" sm="3" class="ml-2">
-            <v-menu
               v-model="menu"
               :close-on-content-click="false"
               transition="scale-transition"
@@ -127,18 +99,19 @@
             >
             </v-select>
           </v-col>
-          <v-row no-gutters dense justify-md="start">
-            <v-col cols="12" sm="3" class="ml-2">
+          <v-col cols="12" sm="3" class="ml-2">
               <v-text-field
                 v-model="pvs.Numpvs"
                 dense
                 outlined
+                placeholder="السنة-الرمز-الرقم"
                 required
                 label="رقم المحضر"
-                :rules="nameRules"
+                :rules="NumRules"
               ></v-text-field>
             </v-col>
-
+          </v-row>
+          <v-row no-gutters dense justify-md="start">
             <v-col cols="12" sm="7" class="ml-2">
               <v-textarea
                 v-model="pvs.sujetpvs"
@@ -154,7 +127,6 @@
               </v-textarea>
             </v-col>
           </v-row>
-        </v-row>
 
         <v-row dense justify-md="start">
           <v-col cols="12" sm="4">
@@ -163,8 +135,8 @@
               color="blue accent-4"
               accept="application/pdf"
               counter
-              label="أضف المُرفق"
-              placeholder="أضف المُرفق"
+              label="تحميل المُرفق"
+              placeholder="تحميل المُرفق"
               append-icon="mdi-file-plus"
               outlined
               dense
@@ -235,11 +207,9 @@ export default {
       typePoliceJudicID: 0,
       sujetpvs: "",
       Numpvs: "",
-      dateEnregPvs: new Date(
-        Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .substr(0, 10),
+      dateEnregPvs: new Date(Date.now() - new Date().getTimezoneOffset() * 60000
+                    ).toISOString().substr(0, 10),
+
       policeJudics: "",
       datePvs: "",
       heureRealisation: "",
@@ -255,7 +225,11 @@ export default {
       valideform: true,
       menu: false,
       menu1: false,
-      nameRules: [(v) => !!v || "حقل ضروري"],
+      nameRules: [(v) => !!v || "حقل إجباري"],
+      NumRules: [
+        v => !!v || '',
+         v =>  /[0-9]+\-[0-9]+\-[0-9]+/.test(v) || '',
+      ],
       load: false,
       // gestion des message d'erreur
       msgErr: false,
@@ -275,12 +249,15 @@ export default {
       this.$refs.form.reset();
     },
 
-    async addFile(idpv, nump) {
+    async addPvs() {
+      this.validate();
+      this.load=true;
       let formData = new FormData();
       formData.append("file", this.file);
-
+      const json = JSON.stringify(this.pvs);
+      formData.append("pv",json);
       await axios
-        .post(`${baseURL.api}/pvs/addPdf/${idpv}.${nump}`, formData, {
+        .post(`${baseURL.api}/pvs/store`,formData,{
           headers: {
             Authorization: `Bearer ${baseURL.token}`,
             "Content-Type": "multipart/form-data",
@@ -290,33 +267,17 @@ export default {
           if (rep.status == 200 || rep.status == 201) {
             this.reset();
             this.file = null;
+            this.load = false; this.msgErr = false;
             this.msgSuc = true; // affiche msg succes
           }
         })
         .catch((err) => {
-          console.log(err);
+          this.load = false;
+            this.msgErr = true; this.msgSuc = false;
         });
     },
 
-    async addPvs() {
-      this.validate();
-      this.load = true;
-      await axios
-        .post(
-          `${baseURL.api}/pvs/store`,
-          { pv: this.pvs },
-          { headers: { Authorization: `Bearer ${baseURL.token}` } }
-        )
-        .then(async (rep) => {
-          if (rep.status == 200 || rep.status == 201)
-            await this.addFile(rep.data[0], rep.data[1]);
-          this.load = false;
-        })
-        .catch((err) => {
-          this.msgErr = true; // affiche msg erreuur
-          this.load = false;
-        });
-    },
+
   },
 
   created() {

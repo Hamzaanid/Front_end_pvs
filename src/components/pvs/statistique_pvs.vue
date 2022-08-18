@@ -2,14 +2,14 @@
 <div class="chercher_pvs">
  <v-spacer></v-spacer>
      <v-card elevation="2"
-  outlined  class="mx-auto my-auto"
+     outlined  class="mx-auto my-auto"
      >
      <v-toolbar lighten class="nvbar mb-3" flat height="34px">
        <v-toolbar-title  class=" lightengrey--text text-h6">
          تاريخ تسجيل المحضر
          </v-toolbar-title>
          </v-toolbar>
-    <v-form class="px-5">
+        <v-form class="px-5">
           <v-row  
           class="mt-5" dense
            align-content-center 
@@ -129,7 +129,7 @@
 
         <v-col cols="12" sm="5" class="mx-2">
                 <v-card class="elevation-1 px-2" color="orange lighten-3" dense>
-                      المحاضر  في طور المعالجة
+                      المحاضر  في طور الدراسة
                         <v-icon
                             class="shrink ma-2"
                             contain
@@ -151,7 +151,7 @@
         <v-col cols="12" sm="3"></v-col>
         <v-col cols="12" sm="5">
                 <v-card class="elevation-1 px-2" color="red lighten-2" dense>
-                     المحاضر غير المعالجة 
+                     المحاضر غير موزعة 
                         <v-icon
                             class="shrink ma-2"
                             contain
@@ -166,7 +166,14 @@
                     </span>
                </v-card>
         </v-col>
-
+        
+    </v-row>
+    <v-row no-gutters justify-md="start" v-show="display" class="px-5 --text text-h6" >
+      <v-spacer></v-spacer>
+         مجموع المحاضر في هذه الفترة 
+         <span class="text-h6">
+                       :  {{ statistic.total }}
+           </span>
     </v-row>
 </div>
 </template>

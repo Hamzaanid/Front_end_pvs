@@ -10,6 +10,7 @@
     loading-text="إنتظر قليلا"
   >
     <template v-slot:top>
+      <v-btn color="blue lighten-4 ma-1" x-small @click="getUser()">refresh</v-btn>
       <v-toolbar class="smallnavbar mb-3" flat height="34px">
         <v-toolbar-title class="darkgrey--text text-h5">
           المستخدمين</v-toolbar-title
@@ -26,7 +27,7 @@
 
           <v-card-text>
             <v-container>
-              <v-row>
+              <v-row no-gutters>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
                     v-model="editedItem.nom"
@@ -45,6 +46,8 @@
                     label="البريد الالكتروني"
                   ></v-text-field>
                 </v-col>
+                </v-row>
+                <v-row no-gutters>
                 <v-col cols="12" sm="6" md="4">
                   <v-select
                     v-model="editedItem.idRole"
@@ -54,6 +57,24 @@
                     label="دوره"
                     dense
                   ></v-select>
+                  <v-text-field
+                  type="password"
+                  v-model="editedItem.password"
+                  label="كلمة السر"
+                  dense
+                ></v-text-field>
+                <v-file-input
+                  v-model="file"
+                  accept="image/png,image/jpeg"
+                  color="blue accent-4"
+                  counter
+                  class="mt-3"
+                  label="أضف التوقيع"
+                  placeholder="أضف التوقيع"
+                  prepend-icon="mdi-file-plus"
+                  dense
+                  full-width
+                ></v-file-input>
                   <v-switch v-model="editedItem.active" label="نشيط"></v-switch>
                 </v-col>
               </v-row>
@@ -132,6 +153,7 @@ export default {
     user: [],
     editedItem: {},
     msgErr:false,
+    file:null
   }),
   watch: {
     dialog(val) {
@@ -143,6 +165,34 @@ export default {
   },
 
   methods: {
+    async validate() {
+        this.loadValid = true
+        this.$refs.valid.validate();
+      let formData = new FormData();
+      formData.append("img", this.file);
+      const json = JSON.stringify(this.user);
+      formData.append("users",json);
+      await axios
+        .post(baseURL.api+'/users/store', formData, {
+          headers: {
+            Authorization: `Bearer ${baseURL.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((rep) => {
+          if (rep.status == 200 || rep.status == 201) {
+            console.log(rep.data);
+            this.reset();
+            this.file = null;
+            this.loadValid=false;
+            this.msgSuc = true;
+          }
+          
+        }).catch(err=>{
+          this.loadValid=false;
+          this.msgErr = true;
+        });
+    },
     getColor(active) {
       if (active == false) {
         active = "dis";
@@ -160,24 +210,30 @@ export default {
     },
     async save() {
       this.load_pop_edit = true;
-
       if (this.editedIndex > -1) {
+        let formData = new FormData();
+      formData.append("img", this.file);
+      if(!this.editedItem.password) this.editedItem.password="";
+      const json = JSON.stringify(this.editedItem);
+      formData.append("users",json);
         //Object.assign(this.user[this.editedIndex], this.editedItem)
         await axios
-          .put(
-            baseURL.api + "/users/update/" + this.editedItem.id,
-            {
-              users: this.editedItem,
-            },
-            { headers: { Authorization: `Bearer ${baseURL.token}` } }
-          )
+          .post(
+            baseURL.api + "/users/update/" + this.editedItem.id,formData,
+            { headers: { Authorization: `Bearer ${baseURL.token}`,
+                   "Content-Type": "multipart/form-data", }
+         })
           .then(async (res) => {
             this.table_vide = true;
             await this.getUser();
             this.table_vide = false;
             this.load_pop_edit = false;
+            this.file = null;
+            console.log(res);
           }).catch(err=>{
-            msgErr=true;
+            this.msgErr=true;
+            console.log(err);
+            this.load_pop_edit = false;
           });
       }
       this.close();
@@ -212,6 +268,8 @@ export default {
       this.closeDelete();
     },
     async getUser() {
+    this.table_vide = true;
+      this.user = [];
       await axios
         .get(baseURL.api + "/users/index", {
           headers: {

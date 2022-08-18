@@ -10,6 +10,7 @@ const state = {
         mesdossier_stat:false,
         dashproc:false,
         gestUser:false,
+        archive:true,
     }
 };
 

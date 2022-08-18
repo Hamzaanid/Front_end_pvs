@@ -203,7 +203,7 @@ export default {
           userID:[],
           plaintID:null,
           traitID:1,
-          descision:"jjjj",
+          descision:"",
           dateMission:(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
                     .toISOString().substr(0, 10)
         },

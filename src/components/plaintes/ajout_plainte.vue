@@ -58,21 +58,10 @@
               required
               label="مرجع الشكاية"
               v-model="plaint.referencePlaints"
-              :rules="nameRules"
+              :rules="NumRules"
+              placeholder="السنة-الرمز-الرقم"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="4" class="ml-2">
-            <v-text-field
-              dense
-              single-line
-              outlined
-              label="مكان الوقائع"
-              v-model="plaint.EmplaceFaits"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row justify-md="start" no-gutters dense>
           <v-col cols="12" sm="4" class="ml-2">
             <v-menu
               v-model="menu"
@@ -101,6 +90,10 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
+        </v-row>
+
+        <v-row justify-md="start" no-gutters dense>
+          
           <v-col cols="12" sm="7" class="ml-2">
             <v-textarea
               clearable
@@ -122,14 +115,14 @@
               ><v-col cols="12" sm="4">
                 <v-file-input
                   v-model="file"
-                  accept="application/pdf"
                   required
+                  accept="application/pdf"
                   :rules="nameRules"
                   color="blue accent-4"
                   counter
                   class="mt-3"
-                  label="أضف المُرفق"
-                  placeholder="أضف المُرفق"
+                  label="تحميل المُرفق"
+                  placeholder="تحميل المُرفق"
                   append-icon="mdi-file-plus"
                   outlined
                   dense
@@ -195,18 +188,18 @@ import axios from "axios";
 export default {
   data() {
     const defaultForm = Object.freeze({
-      contreInconnu: null,
+    //  contreInconnu: null,
       TypePlaintID: null,
       SourcePlaintID: null,
       referencePlaints: "",
-      datePlaints: "",
+     // datePlaints: "",
       dateEnregPlaints: new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       )
         .toISOString()
         .substr(0, 10),
-      dateFaits: "",
-      EmplaceFaits: "",
+     // dateFaits: "",
+      //EmplaceFaits: "",
       sujetPlaints: "",
     });
 
@@ -220,6 +213,10 @@ export default {
       load: false,
       menu: false,
       nameRules: [(v) => !!v || "حقل ضروري"],
+      NumRules: [
+        v => !!v || '',
+         v =>  /[0-9]+\-[0-9]+\-[0-9]+/.test(v) || '',
+      ],
       // gestion des message d'erreur
       msgErr:false,
       msgSuc:false,
@@ -236,50 +233,40 @@ export default {
     clearAlert(){
       this.msgErr = this.msgSuc = false;
     },
-    async addFile(idpl, ref) {
+    async addPlaint() {
+      this.validate();
+      this.load = true;
       let formData = new FormData();
+      formData.append("TypePlaintID",this.plaint.TypePlaintID); 
+      formData.append("SourcePlaintID",this.plaint.SourcePlaintID); 
+      formData.append("referencePlaints",this.plaint.referencePlaints); 
+      formData.append("dateEnregPlaints",this.plaint.dateEnregPlaints); 
+      formData.append("sujetPlaints",this.plaint.sujetPlaints); 
       formData.append("file", this.file);
-
       await axios
-        .post(`${baseURL.api}/plaint/addPdf/${idpl}.${ref}`, formData, {
-          headers: {
+        .post(`${baseURL.api}/plaint/store`, formData,{
+          headers:{
             Authorization: `Bearer ${baseURL.token}`,
             "Content-Type": "multipart/form-data",
           },
         })
         .then((rep) => {
           if (rep.status == 200 || rep.status == 201) {
-            this.msgSuc = true; // message d'erreur
-            this.reset();
+            this.msgSuc = true; // message succes
+           this.reset();
             this.file = null;
             this.load=false;
+          }else{
+            this.msgErr = true;
+           this.load = false;
           }
-          
+        }).catch(err=>{
+          console.log(err);
+           this.msgErr = true;
+           this.load = false;
         });
     },
 
-    async addPlaint() {
-      this.validate();
-      this.load = true;
-      await axios
-        .post(
-          `${baseURL.api}/plaint/store`,
-          { plaint: this.plaint },
-          { headers: { Authorization: `Bearer ${baseURL.token}` } }
-        )
-        .then(async (rep) => {
-          if (rep.status == 200 || rep.status == 201) {
-            await this.addFile(rep.data[0], rep.data[1]);
-          }else 
-            this.msgErr = true;
-            
-          this.load = false;
-        }).catch(err=>{
-          this.msgErr = true;
-          this.load = false;
-        });
-        
-    },
   },
 
   created() {

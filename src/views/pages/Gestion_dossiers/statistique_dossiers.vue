@@ -14,13 +14,17 @@
       </v-tab>
       <v-tab
       class="text-h6 mx-10"
-      
       >
       <v-icon right small>mdi-file-chart</v-icon>
      إحصائيات الشكايات 
       </v-tab>
+      <v-tab class="text-h6 mx-10"> 
+        <v-icon right small>mdi-file-chart</v-icon>
+        إحصائيات نوعية
+      </v-tab>
+
        </v-tabs>
-    <v-tabs-items v-model="tab">
+      <v-tabs-items v-model="tab">
 
             <v-tab-item>
             <Statistique_pvs />
@@ -28,6 +32,10 @@
 
             <v-tab-item>
             <Statistique_plainte />
+            </v-tab-item>
+
+            <v-tab-item>
+              <Statistique_particuliere></Statistique_particuliere>
             </v-tab-item>
 
      </v-tabs-items>
@@ -39,11 +47,13 @@
 <script>
 import Statistique_plainte from '@/components/plaintes/statistique_plainte.vue'
 import Statistique_pvs from '@/components/pvs/statistique_pvs.vue'
+import Statistique_particuliere from '@/components/Administration.vue/statistique_particuliere.vue'
 
   export default {
     components: {
         Statistique_plainte,
-        Statistique_pvs
+        Statistique_pvs,
+        Statistique_particuliere
     },
     data() {
       return {

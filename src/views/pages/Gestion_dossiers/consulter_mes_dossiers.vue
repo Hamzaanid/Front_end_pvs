@@ -3,7 +3,7 @@
     <v-card flat>
       <v-toolbar class="smallnavbar mb-3" flat height="34px">
         <v-toolbar-title class="darkgrey--text text-h5">
-          الملفات
+          دراسة المحاضر / الشكايات 
         </v-toolbar-title>
       </v-toolbar>
       <v-row no-gutters>

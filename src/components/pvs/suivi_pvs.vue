@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-data-table
     :headers="headers"
     :items="pvs"
@@ -83,7 +84,7 @@
     </template>
 
     <template v-slot:[`item.actions`]="{ item }">
-      <v-chip color="blue lighten-4" lighten small fab>
+      <v-chip :color="color_desc(item.traitID)" lighten small fab>
         {{ getstatus(item.traitID) }}
         <v-icon
           :disabled="item.traitID == 2 ? false : true"
@@ -98,10 +99,12 @@
       <v-chip fab small 
       :disabled="item.traitID == 2 ? false : true"
       @click="archive(item)">
-        حفظ
+        تأكيد القرار
       </v-chip>
     </template>
   </v-data-table>
+</div>
+  
 </template>
 <script>
 import baseURL from "@/api/baseURL";
@@ -126,7 +129,9 @@ export default {
       { text: "تاريخ التسجيل", value: "dateEnregPvs", sortable: false },
       { text: "تاريخ الاحالة", value: "dateMission", sortable: false },
       { text: "تصفح", value: "lien", sortable: false },
-      { text: "تغيير", value: "actions", sortable: false },
+      { text: "القرار", value: "descision", sortable: false },
+      { text: "تغيير القرار", value: "actions", sortable: false },
+      { text: "تغيير الاحالة", value: "move_affect", sortable: false }
     ],
 
     userhaspvs: {
@@ -159,6 +164,14 @@ export default {
 
   methods: {
     ...mapActions(["pvsDeVice"]),
+    color_desc(val){
+      if(val == 1) return 'yellow lighten-1'; 
+      else return 'green lighten-1';
+    },
+    getstatus(traitID) {
+      if (traitID == 2) return "تمت الدراسة";
+      else return " في طور الدراسة";
+    },
     redirect(link) {
       var names = link.split("/");
       var fileLink = document.createElement("a");
@@ -167,10 +180,7 @@ export default {
       fileLink.click();
     },
 
-    getstatus(traitID) {
-      if (traitID == 2) return "تمت المعالجة";
-      else return " في طور المعالجة";
-    },
+    
 
     close() {
       this.userhaspvs.descision = '';

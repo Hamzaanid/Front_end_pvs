@@ -72,6 +72,7 @@
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <v-btn
+      :disabled="item.traitID == 3 ? true : false"
         small
         color="blue lighten-5"
         @click="editItem(item)"
@@ -230,8 +231,9 @@ export default {
           { text: 'مرجع الشكاية', value: 'plaint.referencePlaints' },
           { text: 'تاريخ تسجيل ', value: 'plaint.dateEnregPlaints' },
           { text: 'موضوع الشكاية', value: 'plaint.sujetPlaints' },
-          { text: 'الملف', value: 'lien', sortable: false },
-          { text: 'تغيير', value: 'action', sortable: false },
+          { text: "القرار  ", value: "descision" },
+          { text: 'المرفق', value: 'lien', sortable: false },
+          { text: 'تغيير ', value: 'action', sortable: false },
         ],
         plaint: [],
         plainte:{
@@ -272,7 +274,7 @@ export default {
         if(traitID == 3)
         return 'معالج'
         else 
-        return ' غير معالج'
+        return ' غير مدروس'
       },
       clearAlert(){
       this.msgErr = this.msgSuc = false;
@@ -313,6 +315,8 @@ export default {
                       { this.reset();
                        this.chercher_plaint();
                         this.load = false;
+                       }else{
+                        this.msgErr=true;
                        }
                      
                     }).catch(err=>{

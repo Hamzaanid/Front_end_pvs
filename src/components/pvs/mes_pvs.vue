@@ -51,7 +51,7 @@
       small 
       @click="edit_item(item)"
       :disabled="item.traitID == 2 ? true : false">
-      توقيع
+      القرار
       <v-icon small>mdi-pencil</v-icon>
       </v-chip>
     </template>
@@ -71,8 +71,9 @@ export default{
         {text: 'رقم المحضر', value: 'Numpvs',align: 'start', sortable: false},
         { text: 'تاريخ التسجيل', value: 'dateEnregPvs', sortable: true },
         { text: 'تاريخ الاحالة', value: 'dateMission', sortable: true },
-        { text: 'الملف', value: 'lien',sortable: false },
-        { text: 'القرار', value: 'actions', sortable: false },
+        { text: 'المرفق', value: 'lien',sortable: false },
+        { text: 'القرار', value: 'descision', sortable: false },
+        { text: 'كتابة القرار', value: 'actions', sortable: false},
         
       ],
             pvs:[],       // pours les donnees de tableau

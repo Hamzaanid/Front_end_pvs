@@ -69,6 +69,7 @@
           </template>
           <template v-slot:[`item.action`]="{ item }">
             <v-btn small color="blue lighten-5" @click="editItem(item)"
+            :disabled="item.traitID == 3 ? true : false"
               ><v-icon left> mdi-pencil </v-icon>
               معاينة
             </v-btn>
@@ -291,7 +292,8 @@ export default {
         { text: "نوع المحضر", value: "pvs.typepvs.nom" },
         { text: " تاريخ التسجيل", value: "pvs.dateEnregPvs" },
         { text: "موضوع المحضر", value: "pvs.sujetpvs" },
-        { text: "الملف", value: "lien", sortable: false },
+         { text: "القرار  ", value: "descision" },
+        { text: "المرفق", value: "lien", sortable: false },
         { text: "تغيير", value: "action", sortable: false },
       ],
       pvss: [],

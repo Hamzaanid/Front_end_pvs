@@ -206,7 +206,7 @@ export default {
           userID:[],
           pvsID:null,
           traitID:1,
-          descision:"hhhh",
+          descision:"",
           dateMission:(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
                     .toISOString().substr(0, 10)
         },
@@ -226,7 +226,7 @@ export default {
           { text: 'الضابطة القضائية', value: 'policeJudics', sortable: false,},
           { text: 'تاريخ التسجيل', value: 'dateEnregPvs', sortable: true,},
           { text: 'موضوع المحضر', value: 'sujetpvs' ,sortable: false,},
-          { text: 'ملف المحضر', value: 'lien' ,sortable: false,},
+          { text: 'المرفق', value: 'lien' ,sortable: false,},
         ],
         pvs: [],//les plaintes de recherche
 

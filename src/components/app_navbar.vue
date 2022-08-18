@@ -71,7 +71,7 @@ export default {
       items: [
         {
           action: "mdi-scale-balance",
-          title: "شكاية",
+          title: "الشكايات",
           route: "/plaintes",
           show:this.$store.state.user.showDrwer.dossierajout,
         },
@@ -89,13 +89,13 @@ export default {
         },
         {
           action: "mdi-folder-eye",
-          title: "المطالعة",
+          title: "تتبع الإنجاز",
           route: "/suivi",
            show:this.$store.state.user.showDrwer.dashproc,
         },
         {
           action: "mdi-file-eye",
-          title: "تتبع الملفات",
+          title: " دراسة",
           route: "/mes_dossiers",
            show:this.$store.state.user.showDrwer.mesdossier_stat,
         },
@@ -107,7 +107,7 @@ export default {
         },
         {
           action: "mdi-folder-cog",
-          title: " إدارة الملفات",
+          title: " إدارة المرفقات",
           route: "/adminDossiers",
            show:this.$store.state.user.showDrwer.dashproc,
         },
@@ -121,7 +121,7 @@ export default {
           action: "mdi-archive-cog",
           title: "الأرشيف",
           route: "archive",
-           show:this.$store.state.user.showDrwer.dashproc,
+           show:this.$store.state.user.showDrwer.archive,
         },
       ],
     };

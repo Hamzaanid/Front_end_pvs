@@ -85,11 +85,11 @@
       </template>
       <template v-slot:[`item.lien`]="{ item }">
         <v-chip @click="redirect(item.lien)" color="blue lighten-5">
-          <v-icon>mdi-download</v-icon>
+          <v-icon small>mdi-download</v-icon>
         </v-chip>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-chip color="blue lighten-4" lighten small fab>
+        <v-chip :color="color_desc(item.traitID)" lighten small fab>
           {{ getstatus(item.traitID) }}
           <v-icon
             :disabled="item.traitID == 2 ? false : true"
@@ -103,7 +103,7 @@
         <v-chip fab small 
         :disabled="item.traitID == 2 ? false : true"
         @click="archive(item)">
-          حفظ
+          تأكيد القرار 
         </v-chip>
       </template>
     </v-data-table>
@@ -135,7 +135,9 @@ export default {
       { text: "تاريخ التسجيل", value: "dateEnregPlaints", sortable: true },
       { text: "تاريخ الاحالة", value: "dateMission", sortable: false },
       { text: "تصفح", value: "lien", sortable: false },
-      { text: "تغيير", value: "actions", sortable: false },
+      { text: "القرار  ", value: "descision", sortable: false },
+      { text: "تغيير القرار", value: "actions", sortable: false },
+      { text: "تغيير الاحالة", value: "move_affect", sortable: false }
     ],
 
     userhasplaints: {
@@ -169,6 +171,8 @@ export default {
     plaint() {
       return this.getAllplaintes_vice;
     },
+    
+
   },
 
   methods: {
@@ -180,9 +184,14 @@ export default {
       fileLink.target = "_blank";
       fileLink.click();
     },
+    color_desc(val){
+      if(val == 1) return 'yellow lighten-1'; 
+      else return 'green lighten-1';
+    },
+    
     getstatus(traitID) {
-      if (traitID == 2) return "تمت المعالجة";
-      else return " في طور المعالجة";
+      if (traitID == 2) return "تمت الدراسة";
+      else return " في طور الدراسة";
     },
     clearAlert(){
       this.msgErr = false; // masquer alert
@@ -258,7 +267,7 @@ export default {
              this.load_vcard = false;
              this.dialogArchive = false;
           } else {
-            this.load_vcard = false;
+            this.load_vcard = false;//
             this.dialogArchive = false;
           }
         })

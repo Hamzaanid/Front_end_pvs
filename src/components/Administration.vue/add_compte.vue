@@ -62,8 +62,8 @@
  
     <v-row no-gutters>
         <v-col cols="12" sm="5" class="ml-6">
-            <v-text-field
-            type="password"
+          <v-text-field
+          type="password"
           v-model="user.password"
           label="كلمة السر"
           dense outlined

@@ -127,7 +127,7 @@
 
         <v-col cols="12" sm="5" class="mx-2">
                 <v-card class="elevation-1 px-2" color="orange lighten-3" dense>
-                      الشكايات  في طور المعالجة
+                      الشكايات  في طور الدراسة
                         <v-icon
                             class="shrink ma-2"
                             contain
@@ -149,7 +149,7 @@
         <v-col cols="12" sm="3"></v-col>
         <v-col cols="12" sm="5">
                 <v-card class="elevation-1 px-2" color="red lighten-2" dense>
-                     الشكايات غير المعالجة 
+                     الشكايات غير موزعة 
                         <v-icon
                             class="shrink ma-2"
                             contain
@@ -164,7 +164,13 @@
                     </span>
                </v-card>
         </v-col>
-
+    </v-row>
+    <v-row no-gutters justify-md="start" v-show="display" class="px-5 --text text-h6" >
+      <v-spacer></v-spacer>
+          مجموع الشكايات في هذه الفترة
+         <span class="text-h6">
+                       :  {{ statistic.total }}
+           </span>
     </v-row>
 </div>
 </template>
