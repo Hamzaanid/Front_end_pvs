@@ -125,36 +125,6 @@
         <v-row no-gutters dense class="ma-0 pa-0" justify-md="start">
           <v-col cols="12" sm="3" class="ml-2">
             <v-menu
-              ref="menu1"
-              v-model="menu1"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="pvs.datePvs"
-                  label="تاريخ المحضر"
-                  append-icon="mdi-calendar"
-                  clearable
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                  outlined
-                  dense
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="pvs.datePvs"
-                no-title
-                scrollable
-                @input="menu1 = false"
-              ></v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="12" sm="3" class="ml-2">
-            <v-menu
               ref="menu2"
               v-model="menu2"
               :close-on-content-click="false"
@@ -200,7 +170,6 @@
             >
             </v-select>
           </v-col>
-          <v-row no-gutters dense justify-md="start">
             <v-col cols="12" sm="3" class="ml-2">
               <v-text-field
                 v-model="pvs.Numpvs"
@@ -212,7 +181,9 @@
                 disabled
               ></v-text-field>
             </v-col>
+            </v-row>
 
+          <v-row no-gutters dense justify-md="start">
             <v-col cols="12" sm="7" class="ml-2">
               <v-textarea
                 v-model="pvs.sujetpvs"
@@ -228,7 +199,6 @@
               </v-textarea>
             </v-col>
           </v-row>
-        </v-row>
 
         <v-row no-gutters dense justify-md="start">
           <v-col cols="12" sm="3" class="mx-1"></v-col>

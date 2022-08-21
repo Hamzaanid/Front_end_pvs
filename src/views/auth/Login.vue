@@ -21,7 +21,7 @@
             name="nom"
             dense
             prepend-inner-icon="mdi-email"
-            v-model="user.nom"
+            v-model="user.nom" 
           />
           <v-text-field
             id="password"

@@ -69,7 +69,10 @@
                     <v-divider lighten class="mb-2"></v-divider>
                     <v-spacer></v-spacer>
                     <div class="text-h6">
-                        {{ statpvs.pvsenCours }}
+                       <v-chip class="px-4 py-1" @click="pvsDeViceEnCours()">
+                     {{ statpvs.pvsenCours }}
+                        </v-chip>   
+                        
                     </div>
                  </v-card>
               </v-col>
@@ -97,6 +100,7 @@
 
                 <v-col cols="12" sm="5" class="mx-2">
                  <v-card flat class=" px-2" color="orange lighten-2" dense>
+                  
                       الشكايات  في طور الدراسة
                         <v-icon
                             class="shrink ma-2"
@@ -104,7 +108,9 @@
                     <v-divider lighten class="mb-2"></v-divider>
                     <v-spacer></v-spacer>
                     <div class="text-h6">
-                        {{ statplaints.plaintsenCours }}
+                      <v-chip class="px-4 py-1" @click="plainteDeViceEnCours()">
+                     {{ statplaints.plaintsenCours }}
+                        </v-chip>   
                     </div>
                  </v-card>
               </v-col>
@@ -112,7 +118,31 @@
                 
             </v-card>
         </v-container>
-         
+      <v-dialog v-model="dialog"
+      scrollable
+      max-width="600px"
+      >
+      <v-card>
+        <v-data-table
+      :headers="headers"
+      :items="plpvEnCour"
+      hide-default-footer
+      :loading="load_table"
+      loading-text="إنتظر قليلا"
+      no-data-text="لاتوجد معلومات"
+    ></v-data-table>
+    <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="closetable()"
+                >
+                  إلغاء 
+                </v-btn>
+              </v-card-actions>
+      </v-card>
+      </v-dialog>
     </div>
 </template>
 <script>
@@ -129,10 +159,42 @@ export default {
       userid: null,
       statpvs:{},
       statplaints:{},
+      //kkk
+      dialog:false,
+      plpvEnCour:[],
+      load_table: true, // loader table vide
+      headers:[],
+      // plaint
+    headersplaint: [
+      {text: "مرجع الشكاية",align: "start",sortable: false,value: "plaint.referencePlaints"},
+      { text: "موضوع الشكاية", value: "plaint.sujetPlaints", sortable: true },
+      { text: "تاريخ التسجيل", value: "plaint.dateEnregPlaints", sortable: true },
+      { text: "تاريخ الاحالة", value: "dateMission", sortable: false }
+    ],
+    // pvs
+    headerspvs: [
+      {text: "رقم المحضر",align: "start",sortable: false,value: "pvs.Numpvs"},
+      { text: "موضوع المحضر", value: "pvs.sujetpvs", sortable: true},
+      { text: "تاريخ التسجيل", value: "pvs.dateEnregPvs", sortable: false },
+      { text: "تاريخ الاحالة", value: "dateMission", sortable: false }
+    ],
 
     };
   },
+  watch: {
+      dialog (val) {
+        if(!val) return this.closetable();
+      },
+      userid(){
+        this.getStatic_vice();
+      }
+  },
   methods: {
+    closetable(){
+      this.dialog = false;
+      this.plpvEnCour =[];
+      this.headers = [];
+    },
 
     async getStatic_vice() {
       this.load = true;
@@ -158,6 +220,38 @@ export default {
           this.msgErr = true;
            this.load = false;
         });
+    },
+    plainteDeViceEnCours(){
+      this.headers = this.headersplaint;
+      this.plpvEnCour = [];
+      this.dialog = true;
+      this.load_table = true;
+            axios
+          .post(baseURL.api + "/users/hasplaints/affiche_plainte_statistic",{
+            userID:this.userid
+          }, {
+            headers: { Authorization: `Bearer ${baseURL.token}` },
+          })
+          .then((rep) => {
+            this.plpvEnCour = rep.data;
+             this.load_table = false;
+          });
+    },
+    pvsDeViceEnCours(){
+      this.headers = this.headerspvs;
+      this.plpvEnCour = [];
+      this.dialog = true;
+      this.load_table = true;
+            axios
+          .post(baseURL.api + "/users/haspvs/affiche_pvs_statistic",{
+            userID:this.userid
+          }, {
+            headers: { Authorization: `Bearer ${baseURL.token}` },
+          })
+          .then((rep) => {
+            this.plpvEnCour = rep.data;
+             this.load_table = false;
+          });
     },
   },
 

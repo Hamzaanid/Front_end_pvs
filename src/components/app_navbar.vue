@@ -103,6 +103,12 @@ export default {
           action: "mdi-file-chart",
           title: " الإحصائيات",
           route: "/statistique",
+           show:this.$store.state.user.showDrwer.dashproc,
+        },
+        {
+          action: "mdi-file-chart",
+          title: "إحصائيات خاصة",
+          route: "/statistique_v",
            show:this.$store.state.user.showDrwer.mesdossier_stat,
         },
         {

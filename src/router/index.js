@@ -10,6 +10,7 @@ import statistique_dossiers from '../views/pages/Gestion_dossiers/statistique_do
 import Admin_dossiers from '../views/pages/Gestion_dossiers/Admin_dossiers.vue'
 import Gestion_user from '../views/pages/Gestion_dossiers/Gestion_user.vue'
 import archive from '../views/pages/Gestion_dossiers/archive.vue'
+import statistique_vice from '../views/pages/Gestion_dossiers/statistique_vice.vue'
 import Middlewares from '../middlewares/'
 
 Vue.use(VueRouter)
@@ -96,6 +97,14 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       },
+      {
+        path: 'statistique_v',
+        name: 'statistique_vice',
+        component: statistique_vice,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
     ]
   },
   {
@@ -106,6 +115,7 @@ const routes = [
       middleware: [Middlewares.guest]
     }
   },
+  
 ]
 
 const router = new VueRouter({
