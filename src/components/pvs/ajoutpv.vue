@@ -141,7 +141,7 @@
               outlined
               dense
               full-width
-              :rules="nameRules"
+              :rules="PdfRules"
             >
               <template v-slot:selection="{ index, text }">
                 <v-chip
@@ -225,10 +225,14 @@ export default {
       valideform: true,
       menu: false,
       menu1: false,
-      nameRules: [(v) => !!v || "حقل إجباري"],
+      nameRules: [(v) => !!v || "حقل إجباري "],
       NumRules: [
-        v => !!v || '',
+        v => !!v || 'حقل إجباري ',
          v =>  /[0-9]+\-[0-9]+\-[0-9]+/.test(v) || '',
+      ],
+      PdfRules: [
+        v => !!v || 'حقل إجباري',
+         v => !v || v.type == 'application/pdf' || '',
       ],
       load: false,
       // gestion des message d'erreur

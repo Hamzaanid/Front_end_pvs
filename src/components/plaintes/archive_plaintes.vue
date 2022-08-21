@@ -107,9 +107,8 @@
     
     </v-form>
      </v-card>
-
-    <v-data-table
-    v-show="affiche_tab"
+<div v-show="affiche_tab">
+  <v-data-table
     :headers="headers"
     :items="plaint" no-data-text="معلومات غير متاحة"
      class="elevation-1 mt-2 pa-2"
@@ -135,6 +134,18 @@
       </v-chip>
     </template>
     </v-data-table>
+    <div class="text-center py-2">
+      <v-pagination
+            v-model="pagination.current"
+            :length="pagination.total"
+            :total-visible="11"
+            @input="onPageChange"
+            circle
+        ></v-pagination>
+     </div>
+</div>
+    
+    
 
   </div>
 </template>
@@ -163,26 +174,37 @@ export default {
         },
          menu1:false,
         menu2:false,
+         pagination: {
+                current: 1,
+                total: 0
+          }
     }
   },
 
   methods: {
     cherArchplaint(){
         this.load = true;
-        axios.post(baseURL.api+"/users/hasplaints/getArchiveplaint",{
+        axios.post(baseURL.api+"/users/hasplaints/getArchiveplaint?page=" + this.pagination.current,{
           cherArch:this.cher
         },{headers: {   Authorization: `Bearer ${baseURL.token}`}
         }).then(rep=>{
           if(rep.status == 200 || rep.status==201)
-          this.plaint = rep.data; 
+          {     this.plaint = rep.data.data; 
+                this.pagination.current = rep.data.current_page;
+                this.pagination.total = rep.data.last_page;
+            }
           
           this.affiche_tab = true;
           this.load = false;
         }).catch(err=>{
+          console.log(err);
           this.msgErr = true;
            this.load = false;
         });
       },
+      onPageChange(){
+          this.cherArchplaint();
+        },
     redirect(link) {
          var names = link.split('/')
           var fileLink = document.createElement('a');

@@ -117,7 +117,6 @@
                   v-model="file"
                   required
                   accept="application/pdf"
-                  :rules="nameRules"
                   color="blue accent-4"
                   counter
                   class="mt-3"
@@ -125,6 +124,7 @@
                   placeholder="تحميل المُرفق"
                   append-icon="mdi-file-plus"
                   outlined
+                  :rules="PdfRules"
                   dense
                   full-width
                 >
@@ -144,9 +144,12 @@
                       class="text-overline grey--text text--lighten-3 mx-2"
                     >
                       +{{ files.length - 2 }} File(s)
+                      {{ files.type }}
+
                     </span>
                   </template>
-                </v-file-input></v-col
+                </v-file-input>
+                </v-col
               ><v-col cols="12" sm="4"> </v-col> </v-row
           ></v-card>
         </template>
@@ -212,10 +215,14 @@ export default {
       valideform: true,
       load: false,
       menu: false,
-      nameRules: [(v) => !!v || "حقل ضروري"],
+      nameRules: [(v) => !!v || "حقل إجباري"],
       NumRules: [
         v => !!v || '',
          v =>  /[0-9]+\-[0-9]+\-[0-9]+/.test(v) || '',
+      ],
+      PdfRules: [
+        v => !!v || '',
+         v => !v || v.type == 'application/pdf' || '',
       ],
       // gestion des message d'erreur
       msgErr:false,

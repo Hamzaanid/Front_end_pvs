@@ -135,17 +135,6 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="4" class="ml-2">
-            <v-text-field
-              dense
-              outlined
-              label="مكان الوقائع"
-              v-model="plainte.EmplaceFaits"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row no-gutters dense justify-md="start">
-          <v-col cols="12" sm="4" class="ml-2">
             <v-menu
               v-model="menu"
               :close-on-content-click="false"
@@ -171,6 +160,9 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
+        </v-row>
+
+        <v-row no-gutters dense justify-md="start">
           <v-col cols="12" sm="7" class="ml-2">
             <v-textarea
               clearable
@@ -230,8 +222,8 @@ export default {
         headers: [
           { text: 'مرجع الشكاية', value: 'plaint.referencePlaints' },
           { text: 'تاريخ تسجيل ', value: 'plaint.dateEnregPlaints' },
-          { text: 'موضوع الشكاية', value: 'plaint.sujetPlaints' },
-          { text: "القرار  ", value: "descision" },
+          { text: 'موضوع الشكاية', value: 'plaint.sujetPlaints', sortable: false },
+          { text: 'القرار', value: "descision", sortable: false},
           { text: 'المرفق', value: 'lien', sortable: false },
           { text: 'تغيير ', value: 'action', sortable: false },
         ],
@@ -251,7 +243,7 @@ export default {
         cherchant:"",
       showupdate:false,
       idpl:null,
-      nameRules: [(v) => !!v || "حقل ضروري"],
+      nameRules: [(v) => !!v || "حقل إجباري"],
       typePlaints:[],
       sourceplaints:[],
       menu:false,

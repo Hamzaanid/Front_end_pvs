@@ -101,7 +101,7 @@
     item-key="id" 
     no-data-text="معلومات غير متاحة"
     show-select hide-default-footer
-    class="elevation-1 mb-10"
+    class="elevation-1 mb-1"
   >
   <template v-slot:[`item.lien`]="{ item }">
             <v-chip color="blue lighten-4" lighten small 
@@ -117,6 +117,15 @@
             </v-chip>
           </template>
   </v-data-table>
+  <div class="text-center py-2">
+      <v-pagination
+            v-model="pagination.current"
+            :length="pagination.total"
+            :total-visible="11"
+            @input="onPageChange"
+            circle
+        ></v-pagination>
+     </div>
 
   <v-row  dense justify-md="start" no-gutters><v-col cols="12" sm="3">
           <v-autocomplete
@@ -233,6 +242,10 @@ export default {
         // gestion des message d'erreur
       msgErr:false,
       msgSuc:false,
+      pagination: {
+                current: 1,
+                total: 0
+          }
        
        }},
       
@@ -252,19 +265,24 @@ export default {
 
          async chercher_pvs(){
           this.load=true;
-            axios.post(baseURL.api +'/pvs/Bydate',{
+            axios.post(baseURL.api +'/pvs/Bydate?page=' + this.pagination.current,{
                dateEnrg:this.date_cher
             },{
               headers:  
                {Authorization: `Bearer ${baseURL.token}`}
           }).then(response => {
-                  this.pvs = response.data;
+                  this.pvs = response.data.data;
+                  this.pagination.current = response.data.current_page;
+                    this.pagination.total = response.data.last_page;
                   this.load=false; this.active=true;
                 }).catch(err=>{
                   this.load=false; this.active=true;
                   this.msgErr = true // message d'erreur
                 });  
                 
+        },
+       onPageChange(){
+          this.chercher_pvs();
         },
 
         async affecter_pvs(){
@@ -286,6 +304,7 @@ export default {
                   return response;
                 }).catch(err=>{
                   this.load2=false;
+                  window.scroll(0, 0);
                  this.msgErr = true;// message d'erreur
                 })
         },
