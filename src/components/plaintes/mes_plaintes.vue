@@ -33,8 +33,8 @@
               <v-btn color="blue darken-1" text @click="closedialog">
                 رجوع
               </v-btn>
-              <v-btn color="blue darken-1" text :disabled="!valideform" @click="valider_edite_descision" >
-                تغيير
+              <v-btn color="blue darken-1" text :disabled="!valideform || load_vcard" @click="valider_edite_descision" >
+                تأكيد
               </v-btn>
 
             </v-card-actions>

@@ -104,7 +104,7 @@ export default {
         { text: "مرجع الشكاية", value: "plaint.referencePlaints" },
         { text: "تاريخ التسجيل ", value: "plaint.dateEnregPlaints" },
         { text: "موضوع الشكاية", value: "plaint.sujetPlaints" },
-        { text: "الملف", value: "lien", sortable: false },
+        { text: "المرفق", value: "lien", sortable: false },
         { text: "تغيير", value: "action", sortable: false },
       ],
       plaint: [],

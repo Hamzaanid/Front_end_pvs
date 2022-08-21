@@ -111,7 +111,7 @@ export default {
         { text: "رقم المحضر", value: "pvs.Numpvs" },
         { text: "تاريخ التسجيل ", value: "pvs.dateEnregPvs" },
         { text: "موضوع المحضر", value: "pvs.sujetpvs" },
-        { text: "الملف", value: "lien", sortable: false },
+        { text: "المرفق", value: "lien", sortable: false },
         { text: "تغيير", value: "action", sortable: false },
       ],
       pvs: [],

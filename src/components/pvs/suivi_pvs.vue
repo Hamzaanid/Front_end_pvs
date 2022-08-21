@@ -45,7 +45,7 @@
                 color="blue darken-1"
                 text
                 @click="valider_edite_descision"
-                :disabled="validform"
+                :disabled="validform || load_vcard"
               >
                 تغيير
               </v-btn>
