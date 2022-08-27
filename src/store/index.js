@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import baseURL from '@/api/baseURL';
 import axios from 'axios';
 import user from './user';
-
 Vue.use(Vuex)
 
 

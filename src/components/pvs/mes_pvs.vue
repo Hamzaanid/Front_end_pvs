@@ -14,22 +14,31 @@
   <v-dialog v-model="dialog" max-width="500px">
           <v-card :loading="load_vcard">
               <v-container>
-                <v-form ref="form" v-model="valideform">
-                    <v-text-field
+                <v-form ref="form" v-model="valideform" class="pa-1">
+                <v-row no-gutters justify-md="start">
+                  <v-text-field
+                      dense
                       :rules="nameRules"
                       v-model="userhaspvs.descision"
                       label="القرار"
                     ></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-checkbox
+                      dense
+                      v-model="checkbox"
+                      label="تأكيد إحالة التحقيق"
+                    ></v-checkbox>
+                </v-row>
                 </v-form>
                     
               </v-container>
 
-              <v-card-actions>
+              <v-card-actions class="pt-0 mt-0">
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closedialog">
                 رجوع
               </v-btn>
-              <v-btn color="blue darken-1" text :disabled="!valideform || load_vcard" @click="valider_edite_descision" >
+              <v-btn color="blue darken-1" text :disabled="!valideform || load_vcard" @click="valider_Fait_descision" >
                 تأكيد
               </v-btn>
 
@@ -50,7 +59,7 @@
         <v-chip 
       small 
       @click="edit_item(item)"
-      :disabled="item.traitID == 2 ? true : false">
+      :disabled="item.traitID == 1 ? false : true">
       القرار
       <v-icon small>mdi-pencil</v-icon>
       </v-chip>
@@ -86,11 +95,17 @@ export default{
                 idpvs:null,
             },
             valideform:true,
-            nameRules: [(v) => !!v || "حقل ضروري"],
+            nameRules: [(v) => !!v || "حقل إجباري"],
             load_url:false, // ici loader application
             load_vcard:false, // lorsque on veut ajouter la descision
+            checkbox:false,
 
         }
+    },
+    watch:{
+      dialog(val){
+        val || this.closedialog()
+      }
     },
 
     methods:{
@@ -100,6 +115,8 @@ export default{
             this.userhaspvs.lien ='';
           this.userhaspvs.idpvs = -1;
           this.userhaspvs.descision = '';
+          this.checkbox = false;
+
         },
 
         // navigate to document
@@ -117,9 +134,12 @@ export default{
           this.userhaspvs.lien = item.lien;
           this.userhaspvs.idpvs = item.id;
         },
-        valider_edite_descision(){
+        valider_Fait_descision(){
           this.load_vcard = true;
-                axios
+          if(this.checkbox){
+            this.userhaspvs.traitID = 4;
+          }
+         axios
             .post(baseURL.api + "/users/haspvs/signer_pvs/"+this.userhaspvs.idpvs,{
               userhaspvs:this.userhaspvs
             },{

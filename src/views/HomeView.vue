@@ -15,6 +15,12 @@ import app_navbar from '@/components/app_navbar.vue'
       },
     created(){
       baseURL.token = localStorage.getItem("token");
-    }
+    },
+
+     beforeRouteEnter(to, from, next){
+      console.log("hhh")
+      next();
+ }
+  
   }
 </script>

@@ -46,7 +46,7 @@
               v-show="item.show"
             >
               <v-list-item-icon>
-                <v-icon left v-text="item.action"></v-icon>
+                <v-icon left v-text="item.action" small></v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title
@@ -73,49 +73,55 @@ export default {
           action: "mdi-scale-balance",
           title: "الشكايات",
           route: "/plaintes",
-          show:this.$store.state.user.showDrwer.dossierajout,
+          show:this.$store.state.user.showDrwer.dossiersFirst,
         },
         {
           action: "mdi-bank-plus",
           title: "المحاضر",
           route: "/pvs",
-           show:this.$store.state.user.showDrwer.dossierajout,
+           show:this.$store.state.user.showDrwer.dossiersFirst,
+        },
+        {
+          action: "mdi-bank-plus",
+          title: "محاضر التحقيق",
+          route: "/pvs_enquete",
+           show:this.$store.state.user.showDrwer.dossiersFirst,
         },
         {
           action: "mdi-plus-thick",
           title: "الإحالات",
           route: "/traiter",
-           show:this.$store.state.user.showDrwer.dashproc,
+           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
         },
         {
           action: "mdi-folder-eye",
           title: "تتبع الإنجاز",
           route: "/suivi",
-           show:this.$store.state.user.showDrwer.dashproc,
+           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
         },
         {
           action: "mdi-file-eye",
           title: " دراسة",
           route: "/mes_dossiers",
-           show:this.$store.state.user.showDrwer.mesdossier_stat,
+           show:this.$store.state.user.showDrwer.statistic_Etude,
         },
         {
           action: "mdi-file-chart",
           title: " الإحصائيات",
           route: "/statistique",
-           show:this.$store.state.user.showDrwer.dashproc,
+           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
         },
         {
           action: "mdi-file-chart",
           title: "إحصائيات خاصة",
           route: "/statistique_v",
-           show:this.$store.state.user.showDrwer.mesdossier_stat,
+           show:this.$store.state.user.showDrwer.statistic_Etude,
         },
         {
           action: "mdi-folder-cog",
           title: " إدارة المرفقات",
           route: "/adminDossiers",
-           show:this.$store.state.user.showDrwer.dashproc,
+           show:this.$store.state.user.showDrwer.mv_dossier,
         },
         {
           action: "mdi-account-cog",
@@ -127,6 +133,18 @@ export default {
           action: "mdi-archive-cog",
           title: "الأرشيف",
           route: "archive",
+           show:this.$store.state.user.showDrwer.archive,
+        },
+        {
+          action: "mdi-folder-cog",
+          title: " قرارات التحقيق",
+          route: "descision_enquete",  
+           show:this.$store.state.user.showDrwer.archive,
+        },
+        {
+          action: "mdi-folder-cog",
+          title: "قاضي التحقيق",
+          route: "DossiersJuge",  
            show:this.$store.state.user.showDrwer.archive,
         },
       ],

@@ -69,7 +69,7 @@
           </template>
           <template v-slot:[`item.action`]="{ item }">
             <v-btn small color="blue lighten-5" @click="editItem(item)"
-            :disabled="item.traitID == 3 ? true : false"
+            :disabled="item.traitID >= 3 ? true : false"
               ><v-icon left> mdi-pencil </v-icon>
               معاينة
             </v-btn>
@@ -294,8 +294,11 @@ export default {
       fileLink.click();
     },
     getstatus(traitID) {
-      if (traitID == 3) return "معالج";
-      else return " غير معالج";
+      if (traitID < 3 || traitID == 4) return  " غير معالج";
+      else {
+        if(traitID == 3) return "معالج";
+        else return " الإحالة على التحقيق";
+        }
     },
      clearAlert(){
       this.msgErr = this.msgSuc = false;

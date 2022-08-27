@@ -144,7 +144,6 @@
                       class="text-overline grey--text text--lighten-3 mx-2"
                     >
                       +{{ files.length - 2 }} File(s)
-                      {{ files.type }}
 
                     </span>
                   </template>
@@ -178,8 +177,9 @@
               إلغاء
             </v-btn>
 
-            <v-spacer></v-spacer> </v-card-actions
-        ></v-row>
+            <v-spacer></v-spacer>
+             </v-card-actions>
+             </v-row>
       </v-form>
     </v-card>
   </div>

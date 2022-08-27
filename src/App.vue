@@ -13,7 +13,8 @@ export default {
     changeRTL() {
       this.$vuetify.rtl = 0.0;
     },
-  },
+  },  
+
 };
 </script>
 <style>
@@ -37,7 +38,7 @@ export default {
   background-size: 32px 32px;
   background-position: 0 0, 16px 16px, 32px 16px;
   background-color: #f0f0f0;
-  font-family: "Droid Arabic Naskh", Arial, Helvetica, sans-serif;
+  font-family:"Droid Arabic Naskh", Arial, Helvetica, sans-serif;
   font-size: 12px;
   text-decoration: none;
   color: black;

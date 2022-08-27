@@ -11,7 +11,11 @@ import Admin_dossiers from '../views/pages/Gestion_dossiers/Admin_dossiers.vue'
 import Gestion_user from '../views/pages/Gestion_dossiers/Gestion_user.vue'
 import archive from '../views/pages/Gestion_dossiers/archive.vue'
 import statistique_vice from '../views/pages/Gestion_dossiers/statistique_vice.vue'
+import pvs_enquete from '../views/pages/Dossiers_enquete/pvs_enquete.vue'
+import descision_enquete from '../views/pages/Dossiers_enquete/descision_enquete.vue'
+import pvs_enqueteJuge from '../views/pages/Dossiers_enquete/pvs_enqueteJuge.vue'
 import Middlewares from '../middlewares/'
+
 
 Vue.use(VueRouter)
 
@@ -105,6 +109,30 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       },
+      {
+        path: 'pvs_enquete',
+        name: 'pvs_enquete',
+        component: pvs_enquete,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
+      {
+        path: 'descision_enquete',
+        name: 'descision_enquete',
+        component: descision_enquete,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
+      {
+        path: 'DossiersJuge',
+        name: 'DossiersJuge',
+        component: pvs_enqueteJuge,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
     ]
   },
   {
@@ -153,5 +181,6 @@ router.beforeEach( (to, from, next) => {
   }
   return next();
 });
+
 
 export default router

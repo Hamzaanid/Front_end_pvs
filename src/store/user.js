@@ -6,11 +6,12 @@ const state = {
     userDetails: {},
 
     showDrwer:{
-        dossierajout:true,
-        mesdossier_stat:false,
-        dashproc:false,
+        dossiersFirst:true,
+        statistic_Etude:false,
+        Affect_suivi_statistic:false,
         gestUser:false,
         archive:true,
+        mv_dossier:false,
     }
 };
 
@@ -30,13 +31,15 @@ const mutations = {
 
     profile(state,ob){
         // bereau d'ordre
-        this.state.user.showDrwer.dossierajout = ob[0];
+        this.state.user.showDrwer.dossiersFirst = ob[0];
         // vice
-        this.state.user.showDrwer.mesdossier_stat = ob[1];
+        this.state.user.showDrwer.statistic_Etude = ob[1];
         // procurreur
-        this.state.user.showDrwer.dashproc = ob[2];
+        this.state.user.showDrwer.Affect_suivi_statistic = ob[2];
         // admin
         this.state.user.showDrwer.gestUser = ob[3];
+        // admin move fichier
+        this.state.user.showDrwer.mv_dossier = ob[4];
       },
 };
 
@@ -53,23 +56,23 @@ const actions = {
 
                 switch(response.data.role.nom) {
                     case "user": { 
-                             ctx.commit('profile',[true,false,false,false]);
+                             ctx.commit('profile',[true,false,false,false,false]);
                                 this.$router.push('/plaintes');
                                   break;
                                   }
 
                    case "vice_proc": { 
-                                    ctx.commit('profile',[false,true,false,false]);
+                                    ctx.commit('profile',[false,true,false,false,false]);
                                     this.$router.push('/mes_dossiers');
                                      break;
                                         }
                    case "proc": { 
-                                ctx.commit('profile',[true,true,true,false]);
+                                ctx.commit('profile',[true,true,true,false,true]);
                                   this.$router.push('/suivi');  
                                   break;
                                   }
                     case "admin": {
-                                ctx.commit('profile',[true,true,true,true]);
+                                ctx.commit('profile',[true,true,true,true,true]);
                                     this.$router.push('/GesyionUser');  
                                     break;
                                     }

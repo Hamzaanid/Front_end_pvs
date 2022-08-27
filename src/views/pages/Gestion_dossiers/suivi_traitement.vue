@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- selectioner un user ayant des  dossiers -->
     <v-card elevation="2" outlined class="mx-auto my-auto justify-center">
       <v-toolbar class="smallnavbar mb-3" flat height="34px">
         <v-toolbar-title class="darkgrey--text text-h5"
@@ -39,8 +40,16 @@
             color="green"
           ></v-switch>
         </v-col>
+        <v-col cols="12" sm="3">
+          <v-switch class="ma-0 pa-0"
+            v-model="switchdossier"
+            label="المحاضر المحالة لتحقيق"
+            color="green"
+          ></v-switch>
+        </v-col>
       </v-row>
     </v-card>
+    <!-- dialog pour changer user -->
     <v-dialog v-model="dialogUser" max-width="500px">
           
             <v-card :loading="load_change_user">
@@ -74,6 +83,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <!-- les plaintes -->
     <v-card
       elevation="2"
       v-show="display"
@@ -81,6 +91,8 @@
       class="mx-auto my-auto mt-3 justify-center"
       
     >
+    <div class="light-blue lighten-4 pa-2"
+              >الشكايات المحالة</div>
     <v-data-table v-show="switchplainte"
       :headers="headerspl"
       :items="plaint"
@@ -91,14 +103,9 @@
       no-data-text="لاتوجد شكايات"
     >
       <template v-slot:top>
-        
+         
         <v-toolbar flat dense>
           <v-row no-gutters dense>
-            <v-toolbar-title class="light-blue lighten-5"
-              >الشكايات المحالة</v-toolbar-title
-            >
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
             <v-col cols="12" sm="6">
               <v-text-field
                 v-model="search"
@@ -106,6 +113,7 @@
                 label="مرجع الشكاية"
                 single-line
                 hide-details
+                dense
               ></v-text-field>
             </v-col>
           </v-row>
@@ -204,36 +212,39 @@
       </template>
     </v-data-table>
     </v-card>
+
+    <!-- les pvs -->
     <v-card
       v-show="display"
       elevation="2"
       outlined
       class="mx-auto my-auto mt-3 justify-center"
     >
+    <div class="light-blue lighten-4 pa-2"
+          >المحاضر المحالة</div
+        >
     <v-data-table
     v-show="switchpvs"
     :headers="headers"
     :items="pvs"
     hide-default-footer
-    :search="search"
+    :search="searchpv"
     :loading="load_tablepv"
     loading-text="إنتظر قليلا"
     no-data-text="لاتوجد محاضر"
   >
     <template v-slot:top>
       <v-toolbar flat dense>
-        <v-toolbar-title class="light-blue lighten-5"
-          >المحاضر المحالة</v-toolbar-title
-        >
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
+        <v-col cols="12" sm="6">
         <v-text-field
-          v-model="search"
+          v-model="searchpv"
           append-icon="mdi-magnify"
           label="رقم المحضر"
           single-line
           hide-details
+          dense
         ></v-text-field>
+        </v-col>
         <v-dialog v-model="dialog1" max-width="500px">
           <v-card :loading="load_vcard">
           <v-alert dense type="error" v-model="msgErr" @click="clearAlert()"
@@ -242,17 +253,26 @@
             <v-card-text>
               <v-container>
                 <v-form ref="form" v-model="validform">
-                  <v-text-field
+                <v-row no-gutters justify-md="start">
+                   <v-text-field
                   v-model="userhaspvs.descision"
                   label="القرار"
                   :rule="nameRules"
                   required
+                  dense
                 ></v-text-field>
+                <v-spacer></v-spacer>
+                    <v-checkbox
+                      dense
+                      v-model="checkbox"
+                      label="تأكيد إحالة التحقيق"
+                    ></v-checkbox>
+                </v-row>
                 </v-form>
               </v-container>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="py-0">
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closepvs"> رجوع </v-btn>
               <v-btn
@@ -269,7 +289,7 @@
         <v-dialog v-model="dialogArchive" max-width="400px">
             <v-card :loading="load_vcard">
               <v-card-title class="blue lighten-5">
-                هل تريد حفظ  هذا المحضر في الأرشيف
+                {{ messageConfirm }}
               </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -277,7 +297,7 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  @click="ArchiveConfirm()"
+                  @click="ArchiveConfirm(3)"
                 >
                   نعم 
                 </v-btn>
@@ -323,7 +343,72 @@
 
       <v-chip fab small 
       :disabled="item.traitID == 2 ? false : true"
-      @click="archive(item)">
+      @click="archive(item,0)">
+        تأكيد القرار
+      </v-chip>
+    </template>
+  </v-data-table>
+    </v-card>
+
+    <!-- les dossiers d'enquete -->
+    <v-card
+      v-show="display"
+      elevation="2"
+      outlined
+      class="mx-auto my-auto mt-3 justify-center"
+    >
+    <div class="light-blue lighten-4 pa-2"
+          > محاضر التحقيق</div
+        >
+    <v-data-table
+    v-show="switchdossier"
+    :headers="headers"
+    :items="pvs_enquete"
+    hide-default-footer
+    :search="search_enquete"
+    :loading="load_tablepv"
+    loading-text="إنتظر قليلا"
+    no-data-text="لاتوجد محاضر"
+  >
+    <template v-slot:top>
+
+        <v-col cols="12" sm="6">
+        <v-text-field
+          v-model="search_enquete"
+          append-icon="mdi-magnify"
+          label="رقم المحضر"
+          single-line
+          hide-details
+          dense
+        ></v-text-field>
+        </v-col>
+    </template>
+    <template v-slot:[`item.lien`]="{ item }">
+      <v-chip
+        @click="redirect(item.lien)"
+        color="blue lighten-5"
+        class="app-link"
+      >تصفح
+        <v-icon small>mdi-download</v-icon>
+      </v-chip>
+    </template>
+
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-chip :color="color_desc(item.traitID)" lighten small fab>
+        {{ getstatus(item.traitID) }}
+        <v-icon
+          :disabled="item.traitID == 4 ? false : true"
+          small
+          class="mr-2"
+          @click="edite_discisionpvs(item)"
+        >
+          mdi-pencil
+        </v-icon>
+      </v-chip>
+
+      <v-chip fab small 
+      :disabled="item.traitID == 4 ? false : true"
+      @click="archive(item,1)">
         تأكيد القرار
       </v-chip>
     </template>
@@ -351,6 +436,7 @@ export default {
       viceProc: [],
       userid: null,
       switchpvs: true,
+      switchdossier:true,
       switchplainte: true,
       // plaintes
       plaint:[],
@@ -381,9 +467,9 @@ export default {
     validform1:true,// valider formulaire de descision
     nameRules: [(v) => !!v || "حقل إجباري"],
     msgErr:false,
-    // pvs 
+    // pvs ################
      dialog: false,
-    search: "",
+    searchpv: "",
     load_tablepv: false,
     pvs:[],
     headers: [
@@ -409,6 +495,14 @@ export default {
       idpvs: null,
     },
     dialogArchive: false,
+    // les dossier d'enquetes ###########
+    pvs_enquete:[],
+    search_enquete:"",
+    checkbox:false,
+    dialog_enquete:false,
+    messageConfirm:"",
+    typeArchive:null,
+    
     };
   },
   watch:{
@@ -416,6 +510,10 @@ export default {
       this.display=true;
       this.plainteDeVice();
       this.pvsDeVice();
+      this.pvsEnqueteDeVice();
+    },
+    dialog(val){
+      val || this.closeplaint()
     }
   },
 
@@ -479,8 +577,10 @@ export default {
     },
     
     getstatus(traitID) {
-      if (traitID == 2) return "تمت الدراسة";
-      else return " في طور الدراسة";
+      if (traitID == 2 || traitID==4) return "تمت الدراسة";
+      else{
+        return " في طور الدراسة";
+      } 
     },
     clearAlert(){
       this.msgErr = false; // masquer alert
@@ -582,6 +682,7 @@ export default {
           this.load_tablepv = false;
         });
   },
+  
      redirect(link) {
       var names = link.split("/");
       var fileLink = document.createElement("a");
@@ -595,6 +696,7 @@ export default {
       this.userhaspvs.idpvs = -1;
       this.userhaspvs.userID = -1;
       this.dialog1 = false;
+      this.dialog_enquete = false;
     },
     edite_discisionpvs(item) {
       this.userhaspvs.lien = item.lien;
@@ -605,6 +707,9 @@ export default {
     },
 
     valider_edite_descision_pvs() {
+      if(this.checkbox){
+        this.userhaspvs.traitID = 4;
+      }
       this.load_vcard = true;
       axios
         .post(
@@ -615,7 +720,7 @@ export default {
           })
           .then((rep) => {
           if (rep.status == 200) {
-            this.pvsDeVice();
+            this.pvsDeVice(); this.pvsEnqueteDeVice();
             this.closepvs();
             this.load_vcard = false;
           } else {
@@ -634,23 +739,33 @@ export default {
         this.dialogArchive = false;
       }
     },
-    archive(item) {
+    archive(item,type) { 
+      // /type/ : 0 archive et /type/ : 1 confirm_f_enquete
+      if(type == 0) {
+        this.typeArchive = 3
+        this.messageConfirm = "هل تريد حفظ  هذا المحضر في الأرشيف";}
+      if(type == 1) {
+        this.typeArchive = 5;
+        this.messageConfirm = "تأكيد إحالة المحضر إلى التحقيق ";
+        }
       this.userhaspvs.idpvs = item.id;
       this.dialogArchive = true;
     },
-    ArchiveConfirm() {
+    ArchiveConfirm(type) {
+      // 3 archive plaint // 4 confirm dossier enquete
       this.load_vcard = true;
       axios
         .put(
           baseURL.api +
             "/users/haspvs/updateTrait/" +
             this.userhaspvs.idpvs,
-          { traitID: 3 },
+          { traitID: this.typeArchive },
           { headers: { Authorization: `Bearer ${baseURL.token}` } }
         )
         .then((rep) => {
           if (rep.status == 200 || rep.status == 201) {
             this.pvsDeVice();
+            this.pvsEnqueteDeVice();
             this.load_vcard = false;
             this.dialogArchive = false;
           } else {
@@ -663,6 +778,23 @@ export default {
           this.dialogArchive = false;
         });
     },
+    // le sdossier d'enquete ##################
+        pvsEnqueteDeVice(){
+      this.pvs_enquete = [];
+      this.load_tablepv = true;
+        axios
+        .post(baseURL.api + "/users/haspvs/pvs_enquete",{
+          userID:this.userid
+        }, {
+          headers: { Authorization: `Bearer ${baseURL.token}` },
+        })
+        .then((rep) => {
+          this.pvs_enquete = rep.data;
+          this.load_tablepv = false;
+        });
+  },
+
+  
   },
 
   created() {
