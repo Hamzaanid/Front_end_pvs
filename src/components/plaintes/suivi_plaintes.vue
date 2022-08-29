@@ -116,15 +116,13 @@ import axios from "axios";
 import { Action, mapActions, mapGetters, mapState } from "vuex";
 
 export default {
-  props:{
-    idUser:Number
-  },
   data: () => ({
+    plaint:[],
     dialog: false,
     dialogArchive:false,
     search: "",
     load_vcard: false, // loader vcard
-    load_table: true, // loader table vide
+    load_table: false, // loader table vide
     headers: [
       {
         text: "مرجع الشكاية",
@@ -137,7 +135,6 @@ export default {
       { text: "تصفح", value: "lien", sortable: false },
       { text: "القرار  ", value: "descision", sortable: false },
       { text: "تغيير القرار", value: "actions", sortable: false },
-      { text: "تغيير الاحالة", value: "move_affect", sortable: false }
     ],
 
     userhasplaints: {
@@ -150,7 +147,7 @@ export default {
     },
     load_vcard:false,
     validform:true,// valider formulaire de descision
-    nameRules: [(v) => !!v || "حقل ضروري"],
+    nameRules: [(v) => !!v || "حقل إجباري"],
     msgErr:false,
   }),
 
@@ -158,21 +155,7 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    plaint() {
-      if (this.plaint != []) {
-        this.load_table = false;
-      } else {
-        this.load_table = false;
-      }
-    },
-  },
-  computed: {
-    ...mapGetters(["getAllplaintes_vice"]),
-    plaint() {
-      return this.getAllplaintes_vice;
-    },
-    
-
+   
   },
 
   methods: {
@@ -230,6 +213,7 @@ export default {
         )
         .then((rep) => {
           if (rep.status == 200) {
+            this.plainte_a_confirmer();
             this.close();
             this.load_vcard = false;
           } else {
@@ -263,7 +247,7 @@ export default {
         
         ).then((rep) => {
           if (rep.status == 200 || rep.status == 201 ) {
-            this.plainteDeVice(this.idUser);
+            this.plainte_a_confirmer();
              this.load_vcard = false;
              this.dialogArchive = false;
           } else {
@@ -276,6 +260,23 @@ export default {
            this.dialogArchive = false;
         });
     },
+
+    plainte_a_confirmer(){
+      this.plaint=[];
+      this.load_table = true;
+        axios
+        .get(baseURL.api + "/users/hasplaints/plaint_a_confirmer", {
+          headers: { Authorization: `Bearer ${baseURL.token}` },
+        })
+        .then((rep) => {
+          this.plaint = rep.data;
+          this.load_table = false;
+        });
   },
+  
+  },
+  mounted(){
+    this.plainte_a_confirmer();
+  }
 };
 </script>

@@ -161,7 +161,8 @@ export default {
       headers: [
           { text: 'رقم المحضر', value: 'pvs.Numpvs' },
           { text: 'تاريخ التسجيل    ', value: 'pvs.dateEnregPvs' },
-          { text: 'موضوع المحضر', value: 'pvs.sujetpvs' },
+          { text: 'ممثل النيابة', value: 'user.nom' ,sortable: false  },
+          { text: 'موضوع المحضر', value: 'pvs.sujetpvs', sortable: false },
           { text: 'القرار', value: 'descision' , sortable: false},
           { text: 'المرفق', value: 'lien', sortable: false }
         ],

@@ -1,8 +1,11 @@
 <template>
     <div>
         الشكايات
-        <v-alert type="error" v-model="msgErr" @click="msgErr = false">
+        <v-alert type="error" v-model="msgErr" @click="msgErr = false" dense>
         تأكد من شبكة الأنترنيت 
+        </v-alert>
+        <v-alert type="success" v-model="msgSuc" @click="msgSuc = false" dense>
+          تمت العملية بنجاح 
         </v-alert>
         <v-data-table
     :headers="headers"
@@ -94,9 +97,21 @@ export default{
             load_url:false, // ici loader application
             load_vcard:false, // lorsque on veut ajouter la descision
             msgErr:false,
+            msgSuc:false,
 
         }
     },
+    watch:{
+      dialog(val){
+        val || this.closedialog()
+      },
+          msgErr(val){
+             !val || setTimeout(()=>{ this.msgErr=false; this.msgSuc=false; },2000)
+          },
+        msgSuc(val){
+            !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+         }
+       },
 
     methods:{
         // fermer le dialog
@@ -136,6 +151,7 @@ export default{
                 await this.get_mes_plaintes();
                 this.closedialog();
                 this.load_vcard = false;
+                this.msgSuc=true; window.scroll(0,0);
               }else{
                 this.load_vcard = false;
               }
@@ -152,7 +168,6 @@ export default{
       .then((rep) => {
         this.plaintes = rep.data;
         this.load_tab=false;
-        this.msgErr=false;
       }).catch(erreur=>{
         this.load_tab = false;
         this.msgErr=true

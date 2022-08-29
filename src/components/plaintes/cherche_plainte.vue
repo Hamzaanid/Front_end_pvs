@@ -72,7 +72,7 @@
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <v-btn
-      :disabled="item.traitID == 3 ? true : false"
+      :disabled="item.traitID == 1 ? false : true"
         small
         color="blue lighten-5"
         @click="editItem(item)"
@@ -84,7 +84,6 @@
     </template>
     </v-data-table>
   </div>
-         <div class="text-center"> </div>
      </v-card>
 
      <v-card v-show="showupdate" elevation="2" outlined class="mx-auto my-auto mt-4 justify-center">
@@ -223,6 +222,7 @@ export default {
           { text: 'مرجع الشكاية', value: 'plaint.referencePlaints' },
           { text: 'تاريخ تسجيل ', value: 'plaint.dateEnregPlaints' },
           { text: 'موضوع الشكاية', value: 'plaint.sujetPlaints', sortable: false },
+          { text: 'ممثل النيابة', value: 'user.nom', sortable: false },
           { text: 'القرار', value: "descision", sortable: false},
           { text: 'المرفق', value: 'lien', sortable: false },
           { text: 'تغيير ', value: 'action', sortable: false },
@@ -252,6 +252,14 @@ export default {
       msgErr:false,
       msgSuc:false,
         }
+    },
+    watch:{
+      msgErr(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    },
+     msgSuc(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    }
     },
     methods:{
     redirect(link) {
@@ -285,6 +293,7 @@ export default {
         }).then(rep=>{
           if(rep.status == 200 || rep.status==201)
              this.plaint = rep.data;
+             console.log(rep.data);
           this.load = false;
         }).catch(err=>{
           this.msgErr = true;

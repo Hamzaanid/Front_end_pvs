@@ -1,6 +1,12 @@
 <template>
     <div>
         المحاضر
+        <v-alert type="error" v-model="msgErr" @click="msgErr = false" dense>
+        تأكد من شبكة الأنترنيت 
+        </v-alert>
+        <v-alert type="success" v-model="msgSuc" @click="msgSuc = false" dense>
+          تمت العملية بنجاح 
+        </v-alert>
         <v-data-table
     :headers="headers"
     :items="pvs"
@@ -100,12 +106,22 @@ export default{
             load_vcard:false, // lorsque on veut ajouter la descision
             checkbox:false,
 
+            msgErr:false,
+            msgSuc:false,
+
         }
     },
     watch:{
       dialog(val){
         val || this.closedialog()
-      }
+      },
+
+      msgErr(val){
+             !val || setTimeout(()=>{ this.msgErr=false; this.msgSuc=false; },2000)
+          },
+        msgSuc(val){
+            !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+         }
     },
 
     methods:{
@@ -150,11 +166,14 @@ export default{
                 await this.get_mes_pvs();
                 this.closedialog();
                 this.load_vcard = false;
+                this.msgSuc = true; window.scroll(0,0);
               }else{
                 this.load_vcard = false;
+                this.msgErr = true;
               }
             }).catch(erreur=>{
               this.load_vcard = false;
+              this.msgErr = true; window.scroll(0,0);
             });
         },
 
@@ -169,6 +188,7 @@ export default{
         this.load_tab=false;
       }).catch(erreur=>{
         this.load_tab = false;
+        this.msgErr = true; window.scroll(0,0);
       });
         }
        

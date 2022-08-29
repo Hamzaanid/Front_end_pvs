@@ -1,6 +1,7 @@
 <template>
    <div>
      <v-card>
+        <div class="blue lighten-4 pa-3">قرارت خاصة </div>
       <v-data-table
       :headers="headers"
       :items="pvs_enquete"
@@ -39,7 +40,7 @@
           small
           @click="redirect(item.lien)"
         >
-          تصفح 
+          تصفح الملتمس 
           <v-icon small> mdi-download</v-icon>
         </v-chip>
       </template>
@@ -74,12 +75,12 @@ export default{
     return{
       headers: [
         { text: 'رقم ملف التحقيق', value: 'NumDossier',align: 'start', sortable: true },
-        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: true },
+        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: false },
         { text: ' تاريخ التسجيل', value: 'dateEnreg', sortable: true },
-        { text: 'ممثل النيابة', value: 'user.nom', sortable: false },
+        { text: 'ممثل النيابة', value: 'user.nom', sortable: true },
         { text: 'غرفة التحقيق', value: 'chambre_enquete',sortable: false },
         { text: ' قاضي التحقيق', value: 'juge_enquete.nom', sortable: false },
-        { text: ' الملتمس', value: 'lien', sortable: false },
+        { text: 'الملتمس', value: 'lien', sortable: false } ,
         { text: 'القرار', value: 'desc', sortable: false },
       ],
       pvs_enquete:[], 
@@ -99,17 +100,17 @@ export default{
           },
   },
   methods:{
+     redirectDesc(link) {
+         var names = link.split('/')
+          var fileLink = document.createElement('a');
+                fileLink.href =  baseURL.backendPDF+"/DescisionEnquetePDF/"+names[2];
+                fileLink.target = "_blank"; 
+                fileLink.click();
+      },
     redirect(link) {
          var names = link.split('/')
           var fileLink = document.createElement('a');
                 fileLink.href =  baseURL.backendPDF+"/dossiersEnquete/"+names[2];
-                fileLink.target = "_blank"; 
-                fileLink.click();
-      },
-      redirectDesc(link) {
-         var names = link.split('/')
-          var fileLink = document.createElement('a');
-                fileLink.href =  baseURL.backendPDF+"/DescisionEnquetePDF/"+names[2];
                 fileLink.target = "_blank"; 
                 fileLink.click();
       },
@@ -118,9 +119,9 @@ export default{
       else return "غير معالج"
     },
     chercher_dossier(){
-      this.pvs_enquete = []; 
+      this.pvs_enquete = [];
       this.loadcherchedossier = true;
-      axios.post(baseURL.api+"/Enquete/EnqueteChambreCherche/الغرفة 1",{
+      axios.post(baseURL.api+"/Enquete/dossiersParVice",{
         NumDossier: this.cherDossier
       }, { headers: { Authorization: `Bearer ${baseURL.token}` }
        }).then((rep) => {
@@ -136,7 +137,7 @@ export default{
       this.pvs_enquete = [];
       this.load_tab = true;
       axios.get(
-          baseURL.api + "/Enquete/paginateChambre1?page="+this.pagination.current,
+          baseURL.api + "/Enquete/paginate_mes_fileVice?page="+this.pagination.current,
           { headers: { Authorization: `Bearer ${baseURL.token}` }
        }).then((rep) => {
         this.load_tab = false;

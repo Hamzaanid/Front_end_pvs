@@ -35,7 +35,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="loginUser" color="primary">دخول</v-btn>
+        <v-btn @click="loginUser" color="primary" :loading="load">دخول</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -55,21 +55,26 @@ export default {
       },
     };
   },
+  watch:{
+    msgErr(val){
+      !val || setTimeout(()=>{ this.msgErr=false },3000)
+    },
+  },
   methods: {
     ...mapActions({
       login: "user/loginUser",
     }),
-    loginUser() {
+   async loginUser() {
+    this.load = true;
       if (this.$refs.loginForm.validate()) {
-        this.load = true;
-        this.login(this.user)
+       await this.login(this.user)
           .then(() => {
             this.load = false;
             this.$router.push("/");
           })
           .catch((er) => {
             this.msgErr = true;
-            console.log(er);
+            this.load = false;
           });
       }
     },

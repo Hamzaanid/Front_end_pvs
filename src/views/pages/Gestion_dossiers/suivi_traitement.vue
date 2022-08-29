@@ -49,6 +49,9 @@
         </v-col>
       </v-row>
     </v-card>
+    <v-alert dense type="success" v-model="msgSuc" @click="msgSuc=false; msgErr=false"
+      > تمت العملية بنجاح 
+      </v-alert>
     <!-- dialog pour changer user -->
     <v-dialog v-model="dialogUser" max-width="500px">
           
@@ -117,13 +120,12 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="700px">
           
             <v-card :loading="load_vcard">
             <v-alert dense type="error" v-model="msgErr" @click="clearAlert()"
                 >  لم يتم تغيير القرار حاول مرة أخرى 
                 </v-alert>
-              <v-card-text>
                 <v-container>
                   <v-form ref="form1" v-model="validform1">
                     <v-text-field
@@ -134,11 +136,9 @@
                   >
                   </v-text-field>
                   </v-form>
-                  
                 </v-container>
-              </v-card-text>
 
-              <v-card-actions>
+              <v-card-actions class="pa-0 ma-0">
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeplaint"> رجوع </v-btn>
                 <v-btn
@@ -245,7 +245,7 @@
           dense
         ></v-text-field>
         </v-col>
-        <v-dialog v-model="dialog1" max-width="500px">
+        <v-dialog v-model="dialog1" max-width="700px">
           <v-card :loading="load_vcard">
           <v-alert dense type="error" v-model="msgErr" @click="clearAlert()"
                 >  لم يتم تغيير القرار حاول مرة أخرى   
@@ -502,6 +502,8 @@ export default {
     dialog_enquete:false,
     messageConfirm:"",
     typeArchive:null,
+    // succes 
+    msgSuc:false,
     
     };
   },
@@ -514,7 +516,13 @@ export default {
     },
     dialog(val){
       val || this.closeplaint()
-    }
+    },
+    msgErr(val){
+             !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+          },
+    msgSuc(val){
+            !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+         }
   },
 
   methods: {
@@ -543,7 +551,8 @@ export default {
             this.load_change_user = false; this.usersID = null;
             this.plainteDeVice();  this.pvsDeVice();
             this.dialogUser = false;
-            this.choix = "";
+            this.choix = "";  
+            this.msgSuc=true; window.scroll(0,0);
           }).catch(err=>{
             this.load_change_user = false;
             this.msgeror=true;
@@ -622,6 +631,7 @@ export default {
             this.closeplaint();
             this.plainteDeVice();
             this.load_vcard = false;
+            this.msgSuc=true; window.scroll(0,0);
           } else {
             this.load_vcard = false;
             this.msgErr = true;
@@ -656,6 +666,7 @@ export default {
             this.plainteDeVice();
              this.load_vcard = false;
              this.dialogArchive1 = false;
+             this.msgSuc=true; window.scroll(0,0);
           } else {
             this.load_vcard = false;
             this.dialogArchive1 = false;
@@ -723,6 +734,7 @@ export default {
             this.pvsDeVice(); this.pvsEnqueteDeVice();
             this.closepvs();
             this.load_vcard = false;
+            this.msgSuc=true; window.scroll(0,0);
           } else {
             this.load_vcard = false;
           }
@@ -768,6 +780,7 @@ export default {
             this.pvsEnqueteDeVice();
             this.load_vcard = false;
             this.dialogArchive = false;
+            this.msgSuc=true; window.scroll(0,0);
           } else {
             this.load_vcard = false;
             this.dialogArchive = false;

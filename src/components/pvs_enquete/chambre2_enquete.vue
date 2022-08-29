@@ -29,6 +29,9 @@
               </v-btn>
           </v-col>
         </v-row>
+        <v-alert type="error" v-model="msgErr" @click="msgErr = false" dense>
+        تأكد من شبكة الأنترنيت 
+        </v-alert>
       </template>
 
       <template v-slot:[`item.lien`]="{ item }">
@@ -43,7 +46,7 @@
       <template v-slot:[`item.desc`]="{ item }">
         <v-chip
           small
-          @click="redirect(item.lien)"
+          @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
         >
          {{ descision(item.traiter) }}
@@ -71,11 +74,12 @@ export default{
     return{
       headers: [
         { text: 'رقم ملف التحقيق', value: 'NumDossier',align: 'start', sortable: true },
-        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: false },
+        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: true },
+        { text: ' تاريخ التسجيل', value: 'dateEnreg', sortable: true },
         { text: 'ممثل النيابة', value: 'user.nom', sortable: true },
         { text: 'غرفة التحقيق', value: 'chambre_enquete',sortable: false },
         { text: ' قاضي التحقيق', value: 'juge_enquete.nom', sortable: false },
-        { text: 'تحميل الملتمس', value: 'lien', sortable: false },
+        { text: ' الملتمس', value: 'lien', sortable: false },
         { text: 'القرار', value: 'desc', sortable: false },
       ],
       pvs_enquete:[], 
@@ -85,10 +89,23 @@ export default{
       pagination: {
                 current: 1,
                 total: 0
-          }
+          },
+          msgErr:false,
     }
   },
+  watch:{
+    msgErr(val){
+             !val || setTimeout(()=>{ this.msgErr=false },2000)
+          },
+  },
   methods:{
+     redirectDesc(link) {
+         var names = link.split('/')
+          var fileLink = document.createElement('a');
+                fileLink.href =  baseURL.backendPDF+"/DescisionEnquetePDF/"+names[2];
+                fileLink.target = "_blank"; 
+                fileLink.click();
+      },
     redirect(link) {
          var names = link.split('/')
           var fileLink = document.createElement('a');
@@ -97,7 +114,7 @@ export default{
                 fileLink.click();
       },
     descision(traiter){
-      if(traiter) return "تحميل"
+      if(traiter) return "تصفح القرار"
       else return "غير معالج"
     },
     chercher_dossier(){
@@ -111,7 +128,8 @@ export default{
           this.loadcherchedossier = false
         })
         .catch((err) => {
-          this.loadcherchedossier = false
+          this.loadcherchedossier = false;
+          this.msgErr = true;
         });
     },
     dossiersEnquetePaginate(){

@@ -69,14 +69,13 @@
           </template>
           <template v-slot:[`item.action`]="{ item }">
             <v-btn small color="blue lighten-5" @click="editItem(item)"
-            :disabled="item.traitID >= 3 ? true : false"
+            :disabled="item.traitID <= 1 ? false : true"
               ><v-icon left> mdi-pencil </v-icon>
               معاينة
             </v-btn>
           </template>
         </v-data-table>
       </div>
-      <div class="text-center"></div>
     </v-card>
 
     <v-card class="mt-3" v-show="showupdate">
@@ -259,9 +258,9 @@ export default {
       table_vide: false,
       headers: [
         { text: "  رقم المحضر", value: "pvs.Numpvs" },
-        { text: "نوع المحضر", value: "pvs.typepvs.nom" },
         { text: " تاريخ التسجيل", value: "pvs.dateEnregPvs" },
         { text: "موضوع المحضر", value: "pvs.sujetpvs" },
+        { text: 'ممثل النيابة', value: 'user.nom', sortable: false },
          { text: "القرار  ", value: "descision" },
         { text: "المرفق", value: "lien", sortable: false },
         { text: "تغيير", value: "action", sortable: false },
@@ -285,6 +284,14 @@ export default {
       msgSuc:false,
     };
   },
+  watch:{
+    msgErr(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    },
+     msgSuc(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    }
+  },
   methods: {
     redirect(link) {
       var names = link.split("/");
@@ -294,10 +301,14 @@ export default {
       fileLink.click();
     },
     getstatus(traitID) {
+
       if (traitID < 3 || traitID == 4) return  " غير معالج";
       else {
         if(traitID == 3) return "معالج";
-        else return " الإحالة على التحقيق";
+        else {
+          if(traitID == 5) return " الإحالة على التحقيق";
+          if(traitID == 6) return "ملف تحقيق";
+        } 
         }
     },
      clearAlert(){

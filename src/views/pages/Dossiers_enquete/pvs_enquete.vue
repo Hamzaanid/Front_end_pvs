@@ -7,9 +7,7 @@
         </v-toolbar-title>
       </v-toolbar>
       <div>
-        <v-alert dense type="error" v-model="msgErr" @click="clearAlert()">
-          تأكد من صحة المعلومات أو شبكة الأنترنيت
-        </v-alert>
+        
       </div>
       <v-form class="px-5">
         <v-row dense justify-md="start" no-gutters>
@@ -42,6 +40,9 @@
     </v-card>
     <v-card class="mt-2 pa-1" max-width="85%">
       
+        <v-alert type="success" v-model="msgSuc" @click="msgSuc = false" dense>
+          تمت العملية بنجاح 
+        </v-alert>
         <v-data-table
       :headers="headers"
       :items="pvs_enquete"
@@ -63,7 +64,7 @@
         <v-chip
           small
           @click="add_dossier(item)"
-          :disable="item.traitID == 5 ? false : true"
+          :disabled="item.traitID >= 5 ? true : false"
         >
           أضف 
           <v-icon small>mdi-pencil</v-icon>
@@ -83,6 +84,9 @@
     </v-card>
     <v-dialog v-model="ShowForm" width="650">
       <v-card class="mt-2">
+        <v-alert dense type="error" v-model="msgErr" @click="clearAlert()">
+          تأكد من صحة المعلومات أو شبكة الأنترنيت
+        </v-alert>
       <div class="blue lighten-4 pa-2 mb-3"> معطيات ملف التحقيق 
         <v-spacer> رقم المحضر {{ DossierEnquete.Numpvs }}  </v-spacer>
       </div>
@@ -249,13 +253,11 @@ export default {
       DossierEnquete:{
               userID:0,
               pvsID:0,
-
               NumDossier:'',
               type_dossierID:null,
               chambre_enquete:'',
               juge_enqueteID:null,
               dateEnreg:'',
-
               lien:'test',// supprimer ca
 
               Numpvs:null,
@@ -264,7 +266,6 @@ export default {
             juge_enquete:[],
             file:null,
         cherchant:"",
-        msgErr:false,
         PdfRules: [
         v => !!v || '',
          v => !v || v.type == 'application/pdf' || '',
@@ -291,14 +292,22 @@ export default {
             pagination: {
                 current: 1,
                 total: 0
-          }
+          },
+          msgSuc:false,
+          msgErr:false,
            
     };
   },
   watch:{
     ShowForm(val){
       val || this.reset()
-    }
+    },
+    msgErr(val){
+             !val || setTimeout(()=>{ this.msgErr=false; this.msgSuc=false; },2000)
+          },
+        msgSuc(val){
+            !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+         }
   },
   methods: {
     redirect(link) {
@@ -349,7 +358,7 @@ export default {
     },
 
     Confirm_add_dossier(){
-      this.load_confirm = true;
+      
       let formData = new FormData();
        formData.append("file",this.file);
       formData.append("NumDossier", this.DossierEnquete.NumDossier);
@@ -358,10 +367,10 @@ export default {
       formData.append("juge_enqueteID", this.DossierEnquete.juge_enqueteID);
       formData.append("pvsID", this.DossierEnquete.pvsID);
       formData.append("userID", this.DossierEnquete.userID);
-      formData.append("Numpvs", this.DossierEnquete.Numpvs);dateEnreg
+      formData.append("Numpvs", this.DossierEnquete.Numpvs);
       formData.append("dateEnreg", this.DossierEnquete.dateEnreg);
 
-      
+      this.load_confirm = true;
       axios.post(
           baseURL.api + "/Enquete/storeDossier",formData,
           { headers: { Authorization: `Bearer ${baseURL.token}`,
@@ -371,12 +380,14 @@ export default {
           { this.load_confirm = false; 
             this.all_pvs_enquete();
             this.ShowForm = false;
+            this.msgSuc = true; window.scroll(0,0);
             }
-          else  {this.msgErr=true; console.log(rep)}// message erreur
+          else  
+             this.msgErr=true;// message erreur
+             
           this.load_confirm = false;
         })
         .catch((err) => {
-          console.log(err)
           this.msgErr=true;// message erreur
           this.load_confirm = false;
         });

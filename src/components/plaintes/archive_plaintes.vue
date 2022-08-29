@@ -159,8 +159,9 @@ export default {
       msgErr:false,
       affiche_tab:false,
       headers: [
-          { text: 'مرجع الشكاية', value: 'plaint.referencePlaints', sortable: false },
-          { text: 'تاريخ تسجيل ', value: 'plaint.dateEnregPlaints' },
+          { text: 'مرجع الشكاية', value: 'plaint.referencePlaints' },
+          { text: 'تاريخ تسجيل ', value: 'plaint.dateEnregPlaints'},
+          { text: 'ممثل النيابة', value: 'user.nom' ,sortable: false  },
           { text: 'موضوع الشكاية', value: 'plaint.sujetPlaints' , sortable: false},
           { text: 'القرار', value: 'descision' , sortable: false},
           { text: 'المرفق', value: 'lien', sortable: false }

@@ -69,84 +69,84 @@ export default {
     return {
       drawer: false,
       items: [
-        {
+        {  show:this.$store.state.user.dossiers,
           action: "mdi-scale-balance",
           title: "الشكايات",
           route: "/plaintes",
-          show:this.$store.state.user.showDrwer.dossiersFirst,
         },
-        {
+        {  show:this.$store.state.user.dossiers,
           action: "mdi-bank-plus",
           title: "المحاضر",
           route: "/pvs",
-           show:this.$store.state.user.showDrwer.dossiersFirst,
+          
         },
-        {
-          action: "mdi-bank-plus",
-          title: "محاضر التحقيق",
-          route: "/pvs_enquete",
-           show:this.$store.state.user.showDrwer.dossiersFirst,
-        },
-        {
+        
+        {   show:this.$store.state.user.affectation,
           action: "mdi-plus-thick",
           title: "الإحالات",
           route: "/traiter",
-           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
+          
         },
-        {
+        {  show:this.$store.state.user.suivi,
           action: "mdi-folder-eye",
           title: "تتبع الإنجاز",
           route: "/suivi",
-           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
         },
-        {
+        {  show:this.$store.state.user.etude,
           action: "mdi-file-eye",
           title: " دراسة",
           route: "/mes_dossiers",
-           show:this.$store.state.user.showDrwer.statistic_Etude,
         },
-        {
+        {  show:this.$store.state.user.enquete,
+          action: "mdi-bank-plus",
+          title: "محاضر التحقيق",
+          route: "/pvs_enquete",  
+        },
+        {  show:this.$store.state.user.decision_enquete,
+          action: "mdi-folder-cog",
+          title: " قرارات التحقيق",
+          route: "descision_enquete",   
+        },
+        { show:this.$store.state.user.juge_enquete,
+          action: "mdi-folder-cog",
+          title: "ملفات التحقيق",
+          route: "DossiersJuge",  
+        },
+         { show:this.$store.state.user.enqueteVice,
+          action: "mdi-folder-cog",
+          title: "قرارت قاضي التحقيق",
+          route: "mesDossierEnquete",  
+        },
+        {  show:this.$store.state.user.statistic,
           action: "mdi-file-chart",
           title: " الإحصائيات",
           route: "/statistique",
-           show:this.$store.state.user.showDrwer.Affect_suivi_statistic,
+          
         },
-        {
+        { show:this.$store.state.user.statistic_p,
           action: "mdi-file-chart",
           title: "إحصائيات خاصة",
           route: "/statistique_v",
-           show:this.$store.state.user.showDrwer.statistic_Etude,
+          
         },
-        {
+        { show:this.$store.state.user.gestDossiers,
           action: "mdi-folder-cog",
           title: " إدارة المرفقات",
           route: "/adminDossiers",
-           show:this.$store.state.user.showDrwer.mv_dossier,
+          
         },
-        {
+        {  show:this.$store.state.user.comptes,
           action: "mdi-account-cog",
           title: "الحسابات",
           route: "GesyionUser",
-           show:this.$store.state.user.showDrwer.gestUser,
+          
         },
-        {
+        {  show:this.$store.state.user.archive,
           action: "mdi-archive-cog",
           title: "الأرشيف",
-          route: "archive",
-           show:this.$store.state.user.showDrwer.archive,
+          route: "archive",  
         },
-        {
-          action: "mdi-folder-cog",
-          title: " قرارات التحقيق",
-          route: "descision_enquete",  
-           show:this.$store.state.user.showDrwer.archive,
-        },
-        {
-          action: "mdi-folder-cog",
-          title: "قاضي التحقيق",
-          route: "DossiersJuge",  
-           show:this.$store.state.user.showDrwer.archive,
-        },
+        
       ],
     };
   },
@@ -156,11 +156,13 @@ export default {
   computed:{
     username(){
       return this.$store.state.user.userDetails.name;
-    }
+    },
+    dossiers(){
+      return this.$store.state.user.dossiers;
+    },
+
   },
-  created() {
-    this.checkUserState();
-  },
+  
   
   methods: {
     changeRTL() {

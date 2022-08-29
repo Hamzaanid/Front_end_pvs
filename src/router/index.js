@@ -13,8 +13,11 @@ import archive from '../views/pages/Gestion_dossiers/archive.vue'
 import statistique_vice from '../views/pages/Gestion_dossiers/statistique_vice.vue'
 import pvs_enquete from '../views/pages/Dossiers_enquete/pvs_enquete.vue'
 import descision_enquete from '../views/pages/Dossiers_enquete/descision_enquete.vue'
-import pvs_enqueteJuge from '../views/pages/Dossiers_enquete/pvs_enqueteJuge.vue'
+import pvs_enqueteJuge from '../views/pages/Dossiers_enquete/Dossiers_enqueteJuge.vue'
+import viceEnquete from '../views/pages/Dossiers_enquete/viceEnquete.vue'
 import Middlewares from '../middlewares/'
+
+import newSuivi_traite from '../views/pages/Gestion_dossiers/new_suivi_traitement.vue'
 
 
 Vue.use(VueRouter)
@@ -55,7 +58,7 @@ const routes = [
       {
         path: 'suivi',
         name: 'suivi',
-        component: suivi,
+        component: newSuivi_traite,
         meta: {
           middleware: [Middlewares.auth]
         }
@@ -133,6 +136,22 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       },
+      {
+        path: 'mesDossierEnquete',
+        name: 'viceEnquete',
+        component: viceEnquete,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
+      {
+        path: 'newSuivi',
+        name: 'newSuivi',
+        component: newSuivi_traite,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      }
     ]
   },
   {

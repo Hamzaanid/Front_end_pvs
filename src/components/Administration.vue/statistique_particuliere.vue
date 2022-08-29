@@ -61,7 +61,7 @@
         </v-col>
 
                 <v-col cols="12" sm="5" class="mx-2">
-                 <v-card class=" px-2" flat color="orange lighten-2" dense>
+                 <v-card class=" px-2" flat color="red lighten-2" dense>
                       المحاضر  في طور الدراسة
                         <v-icon
                             class="shrink ma-2"
@@ -99,7 +99,7 @@
                  </v-col>
 
                 <v-col cols="12" sm="5" class="mx-2">
-                 <v-card flat class=" px-2" color="orange lighten-2" dense>
+                 <v-card flat class=" px-2" color="red lighten-2" dense>
                   
                       الشكايات  في طور الدراسة
                         <v-icon

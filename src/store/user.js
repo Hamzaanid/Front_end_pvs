@@ -5,46 +5,91 @@ const state = {
     isLoggedIn: false,
     userDetails: {},
 
-    showDrwer:{
-        dossiersFirst:true,
-        statistic_Etude:false,
-        Affect_suivi_statistic:false,
-        gestUser:false,
+  // data of drawer        
+        dossiers:false, // plaint et pvs
+        decision_enquete:false,
+        enquete:false, // pvs enquete
+        enqueteVice:false,
+        juge_enquete:false,
+        affectation:false,
+        suivi:false,
+        etude:false,
+        statistic:false,
+        statistic_p:false,
+        gestDossiers:false,
         archive:true,
-        mv_dossier:false,
-    }
+        comptes:false,
+    
 };
 
 const getters = {
     loggedIn(state) {
         return state.isLoggedIn;
-    }
+    },
 }
 
 const mutations = {
+    profileBureau(state){
+        state.dossiers = true;
+      },
+    profileVice(state){
+        state.etude = true;
+        state.statistic_p = true;
+        state.enqueteVice = true;
+    },
+    profileProc(state){
+        state.dossiers=true; // plaint et pvs
+        state.enquete=false;  //state.enqueteVice=true;
+        state.decision_enquete=true;
+        state.affectation=true;
+        state.suivi=true;
+        state.etude=true;
+        state.statistic=true; //state.statistic_p=true;
+        state.gestDossiers=true;
+    },
+    profileAdmin(){
+        state.dossiers=true; // plaint et pvs
+        state.enquete=true;   state.enqueteVice=true;
+        state.decision_enquete=true;
+        state.affectation=true;
+        state.suivi=true;
+        state.etude=true;
+        state.statistic=true;  state.statistic_p=true;
+        state.gestDossiers=true; state.comptes = true;
+    },
+    profileJugeEnquete(state){
+        state.juge_enquete = true;
+      },
+      profileF_enquete(state){
+        state.enquete = true; // pvs enquete
+        state.decision_enquete=true;
+      },
+
     setLoggedIn(state, payload) {
         state.isLoggedIn = payload;
     },
     setUserDetails(state,userinfo){
         state.userDetails = userinfo;
     },
-
-    profile(state,ob){
-        // bereau d'ordre
-        this.state.user.showDrwer.dossiersFirst = ob[0];
-        // vice
-        this.state.user.showDrwer.statistic_Etude = ob[1];
-        // procurreur
-        this.state.user.showDrwer.Affect_suivi_statistic = ob[2];
-        // admin
-        this.state.user.showDrwer.gestUser = ob[3];
-        // admin move fichier
-        this.state.user.showDrwer.mv_dossier = ob[4];
-      },
+    defaultobject(state){
+        state.dossiers=false; // plaint et pvs
+        state.enquete=false;
+        state.enqueteVice=false;
+        state.juge_enquete=false;
+        state.affectation=false;
+        state.suivi=false;
+        state.etude=false;
+        state.statistic=false;
+        state.statistic_p=false;
+        state.gestDossiers=false;
+        state.archive=true;
+        state.comptes=false;
+    }
 };
 
 const actions = {
     loginUser(ctx, payload){
+        ctx.commit('defaultobject');
         return new Promise( (resolve, reject) => {
             axios
                 .post(baseURL.api+'/users/login', payload)
@@ -56,26 +101,30 @@ const actions = {
 
                 switch(response.data.role.nom) {
                     case "user": { 
-                             ctx.commit('profile',[true,false,false,false,false]);
-                                this.$router.push('/plaintes');
+                             ctx.commit('profileBureau');
                                   break;
                                   }
 
                    case "vice_proc": { 
-                                    ctx.commit('profile',[false,true,false,false,false]);
-                                    this.$router.push('/mes_dossiers');
+                                    ctx.commit('profileVice');
                                      break;
                                         }
                    case "proc": { 
-                                ctx.commit('profile',[true,true,true,false,true]);
-                                  this.$router.push('/suivi');  
+                                ctx.commit('profileProc');
                                   break;
                                   }
                     case "admin": {
-                                ctx.commit('profile',[true,true,true,true,true]);
-                                    this.$router.push('/GesyionUser');  
+                                ctx.commit('profileAdmin');
                                     break;
+                                }
+                    case "f_enquête": { 
+                                        ctx.commit('profileF_enquete');
+                                            break;
                                     }
+                    case "j_enquête": { 
+                                          ctx.commit('profileJugeEnquete');
+                                              break;
+                                        }                
                      }                                  
         })
         .catch((error) => {
@@ -101,6 +150,35 @@ const actions = {
             }
         });
     },
+    profile(ctx,role){
+        switch(role) {
+            case "user": { 
+                     ctx.commit('profileBureau');
+                          break;
+                          }
+
+           case "vice_proc": { 
+                            ctx.commit('profileVice');
+                             break;
+                                }
+           case "proc": { 
+                        ctx.commit('profileProc');
+                          break;
+                          }
+            case "admin": {
+                        ctx.commit('profileAdmin');
+                            break;
+                        }
+            case "f_enquête": { 
+                                ctx.commit('profileF_enquete');
+                                    break;
+                            }
+            case "j_enquête": { 
+                                  ctx.commit('profileJugeEnquete');
+                                      break;
+                                }                
+             }    
+    }
 
     
 };

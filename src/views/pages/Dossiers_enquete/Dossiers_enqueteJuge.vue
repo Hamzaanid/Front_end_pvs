@@ -1,6 +1,34 @@
 <template>
    <div>
-     <v-card>
+     <v-card :loading="loadFile" outlined>
+       <v-dialog v-model="dialog" max-width="400px">
+       <v-card>
+        <v-form ref="form" v-model="validForm">
+              <v-row no-gutters>
+                <v-col cols="12" sm="10">
+                  <v-file-input
+                  :rules="PdfRules"
+              v-model="DescisionEnquete.file"
+              label="تحميل القرار"
+              placeholder="تحميل القرار"
+              accept="application/pdf"
+              required
+            ></v-file-input>
+                </v-col>
+              </v-row>
+              <v-spacer></v-spacer>
+              <v-btn small text 
+              :disabled="!validForm || loadFile"
+            @click="saveDescsion()" class="ma-1" color="blue">
+            تأكيد
+            </v-btn>
+            <v-btn small text color="red"
+            @click="closeDialog()">
+            إلغاء
+            </v-btn>
+            </v-form>
+       </v-card>
+        </v-dialog>
       <v-data-table
       :headers="headers"
       :items="pvs_enquete"
@@ -36,20 +64,25 @@
           small
           @click="redirect(item.lien)"
         >
-          تصفح 
+           تصفح  الملتمس  
           <v-icon small> mdi-download</v-icon>
         </v-chip>
       </template>
-      <template v-slot:[`item.desc`]="{ item }">
+      <template v-slot:[`item.desc`]="{item}">
         <v-chip
           small
-          @click="redirect(item.lien)"
-          :disabled="!item.traiter"
-        >
-         {{ descision(item.traiter) }}
-          <v-icon small> mdi-download</v-icon>
+          @click="redirectDesc(item.lienDescision)"
+          v-show="item.traiter"
+        > تصفح القرار  
+        <v-icon small>mdi-download</v-icon>
+        </v-chip>
+        <v-chip small v-show="!item.traiter"
+        @click="openDialog(item)">
+        تحميل القرار
+        <v-icon small>mdi-cloud-upload</v-icon>
         </v-chip>
       </template>
+      
     </v-data-table>
         <v-pagination
             v-model="pagination.current"
@@ -69,13 +102,19 @@ import axios from 'axios'
 export default{
   data(){
     return{
+      PdfRules: [
+        v => !!v || '',
+         v => !v || v.type == 'application/pdf' || '',
+      ],
+      validForm:true,
       headers: [
         { text: 'رقم ملف التحقيق', value: 'NumDossier',align: 'start', sortable: true },
-        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: false },
+        { text: 'رقم المحضر', value: 'pvs.Numpvs', sortable: true },
+        { text: ' تاريخ التسجيل', value: 'dateEnreg', sortable: true },
         { text: 'ممثل النيابة', value: 'user.nom', sortable: true },
         { text: 'غرفة التحقيق', value: 'chambre_enquete',sortable: false },
         { text: ' قاضي التحقيق', value: 'juge_enquete.nom', sortable: false },
-        { text: 'تحميل الملتمس', value: 'lien', sortable: false },
+        { text: ' الملتمس', value: 'lien', sortable: false },
         { text: 'القرار', value: 'desc', sortable: false },
       ],
       pvs_enquete:[], 
@@ -85,14 +124,63 @@ export default{
       pagination: {
                 current: 1,
                 total: 0
-          }
+          },
+      dialog:false,
+      loadFile:false,
+      DescisionEnquete:{
+        id:null,
+        NumDossier:'',
+        file:null,
+      }
+    }
+  },
+  watch:{
+    dialog(val){
+      val || this.closeDialog()
     }
   },
   methods:{
+    saveDescsion () {
+      this.loadFile = true;
+      let formData = new FormData();
+       formData.append("file",this.DescisionEnquete.file);
+      formData.append("NumDossier", this.DescisionEnquete.NumDossier);
+      axios.post(baseURL.api+"/Enquete/addDescisionEnquete/"+this.DescisionEnquete.id,
+       formData, 
+       { headers: { Authorization: `Bearer ${baseURL.token}` }
+       }).then(async (rep) => {
+         this.loadFile = false;
+         this.cherDossier = this.DescisionEnquete.NumDossier;
+         await this.chercher_dossier();
+         this.dialog =false;
+        })
+        .catch((err) => {
+          this.loadFile = false;
+        });
+      },
+
+      openDialog (item) { 
+        this.dialog = true;
+        this.DescisionEnquete.id = item.id;
+        this.DescisionEnquete.NumDossier = item.NumDossier;
+       },
+      closeDialog() {
+        this.dialog = false;
+        this.DescisionEnquete.file = null;
+        this.DescisionEnquete.id = null;
+        this.DescisionEnquete.NumDossier = '';
+      },
     redirect(link) {
          var names = link.split('/')
           var fileLink = document.createElement('a');
                 fileLink.href =  baseURL.backendPDF+"/dossiersEnquete/"+names[2];
+                fileLink.target = "_blank"; 
+                fileLink.click();
+      },
+    redirectDesc(link) {
+         var names = link.split('/')
+          var fileLink = document.createElement('a');
+                fileLink.href =  baseURL.backendPDF+"/DescisionEnquetePDF/"+names[2];
                 fileLink.target = "_blank"; 
                 fileLink.click();
       },

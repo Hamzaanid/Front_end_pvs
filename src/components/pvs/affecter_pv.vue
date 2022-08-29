@@ -248,6 +248,15 @@ export default {
           }
        
        }},
+
+       watch:{
+          msgErr(val){
+             !val || setTimeout(()=>{ this.msgErr=false; this.msgSuc=false; },2000)
+          },
+        msgSuc(val){
+            !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+         }
+       },
       
        
        methods:{

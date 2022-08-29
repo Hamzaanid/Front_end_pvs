@@ -152,7 +152,7 @@ export default {
     editedIndex: -1,
     user: [],
     editedItem: {},
-    msgErr:false,
+    msgErr:false, msgSuc:false,
     file:null
   }),
   watch: {
@@ -162,6 +162,12 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    msgErr(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    },
+     msgSuc(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    }
   },
 
   methods: {

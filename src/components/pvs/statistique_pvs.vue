@@ -170,10 +170,12 @@
     </v-row>
     <v-row no-gutters justify-md="start" v-show="display" class="px-5 --text text-h6" >
       <v-spacer></v-spacer>
-         مجموع المحاضر في هذه الفترة 
+      <v-chip class="pa-1 ma-1 blue lighten-2">
+        مجموع المحاضر خلال  هذه الفترة 
          <span class="text-h6">
                        :  {{ statistic.total }}
            </span>
+      </v-chip>
     </v-row>
 </div>
 </template>
