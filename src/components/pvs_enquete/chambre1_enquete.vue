@@ -36,6 +36,7 @@
 
       <template v-slot:[`item.lien`]="{ item }">
         <v-chip
+        color="blue lighten-4"
           small
           @click="redirect(item.lien)"
         >
@@ -48,6 +49,7 @@
           small
           @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
+          :color="item.traiter == true ? 'green': 'red darken-4'"
         >
          {{ descision(item.traiter) }}
           <v-icon small> mdi-download</v-icon>

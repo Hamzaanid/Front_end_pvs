@@ -39,6 +39,7 @@
         <v-chip
           small
           @click="redirect(item.lien)"
+          color="blue lighten-4"
         >
           تصفح الملتمس 
           <v-icon small> mdi-download</v-icon>
@@ -49,13 +50,14 @@
           small
           @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
+          :color="item.traiter == true ? 'green': 'red darken-4'"
         >
          {{ descision(item.traiter) }}
           <v-icon small> mdi-download</v-icon>
         </v-chip>
       </template>
     </v-data-table>
-        <v-pagination v-show="false"
+        <v-pagination
             v-model="pagination.current"
             :length="pagination.total"
             :total-visible="11"
@@ -118,7 +120,7 @@ export default{
       if(traiter) return "تصفح القرار"
       else return "غير معالج"
     },
-    chercher_dossier(){
+    chercher_dossier() {
       this.pvs_enquete = [];
       this.loadcherchedossier = true;
       axios.post(baseURL.api+"/Enquete/chercheDossier",{
@@ -133,7 +135,7 @@ export default{
           this.msgErr = true;
         });
     },
-    dossiersEnquetePaginate(){
+    dossiersEnquetePaginate(){ // les dossier non traiter
       this.pvs_enquete = [];
       this.load_tab = true;
       axios.get(
@@ -156,7 +158,7 @@ export default{
 
   },
   created(){
-   // this.dossiersEnquetePaginate();
+    this.dossiersEnquetePaginate();
   }
 }
 </script>

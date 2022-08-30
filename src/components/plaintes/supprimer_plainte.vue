@@ -117,6 +117,14 @@ export default {
       msgSuc:false,
     };
   },
+  watch:{
+    msgErr(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    },
+     msgSuc(val){
+      !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+    }
+  },
   methods: {
      clearAlert(){
       this.msgErr = this.msgSuc = false;

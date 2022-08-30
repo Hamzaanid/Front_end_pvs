@@ -38,6 +38,7 @@
         <v-chip
           small
           @click="redirect(item.lien)"
+          color="blue lighten-4"
         >
           تصفح 
           <v-icon small> mdi-download</v-icon>
@@ -48,6 +49,7 @@
           small
           @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
+          :color="item.traiter == true ? 'green': 'red darken-4'"
         >
          {{ descision(item.traiter) }}
           <v-icon small> mdi-download</v-icon>

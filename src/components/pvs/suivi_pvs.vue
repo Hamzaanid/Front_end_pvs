@@ -4,48 +4,69 @@
     :headers="headers"
     :items="pvs"
     hide-default-footer
-    :search="search"
+    :search="searchpv"
     :loading="load_table"
     loading-text="إنتظر قليلا"
     no-data-text="لاتوجد محاضر"
   >
     <template v-slot:top>
       <v-toolbar flat dense>
-        <v-toolbar-title class="light-blue lighten-5"
-          >المحاضر المحالة</v-toolbar-title
-        >
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
+        <v-row no-gutters dense>
+            <v-switch class="mt-2 mr-6"
+              v-model="switch1"
+              color="green"
+              :label="`${stringstatus}`"
+            ></v-switch>
+          </v-row>
+          <v-row no-gutters dense>
+            <v-col cols="12" sm="6">
         <v-text-field
-          v-model="search"
+          v-model="searchpv"
           append-icon="mdi-magnify"
           label="رقم المحضر"
           single-line
           hide-details
+          dense
         ></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px">
+        </v-col>
+
+          </v-row>
+        
+        <v-dialog v-model="dialog" max-width="700px">
           <v-card :loading="load_vcard">
+          <v-alert dense type="error" v-model="msgErr" @click="clearAlert()"
+                >  لم يتم تغيير القرار حاول مرة أخرى   
+                </v-alert>
             <v-card-text>
               <v-container>
                 <v-form ref="form" v-model="validform">
-                  <v-text-field
+                <v-row no-gutters justify-md="start">
+                   <v-text-field
                   v-model="userhaspvs.descision"
                   label="القرار"
                   :rule="nameRules"
+                  required
+                  dense
                 ></v-text-field>
+                <v-spacer></v-spacer>
+                    <v-checkbox
+                      dense
+                      v-model="checkbox"
+                      label="تأكيد إحالة التحقيق"
+                    ></v-checkbox>
+                </v-row>
                 </v-form>
-                
               </v-container>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="py-0">
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> رجوع </v-btn>
+              <v-btn color="blue darken-1" text @click="close()"> رجوع </v-btn>
               <v-btn
                 color="blue darken-1"
                 text
-                @click="valider_edite_descision"
-                :disabled="validform || load_vcard"
+                @click="valider_edite_descision_pvs"
+                :disabled="!validform || load_vcard"
               >
                 تغيير
               </v-btn>
@@ -54,9 +75,9 @@
         </v-dialog>
         <v-dialog v-model="dialogArchive" max-width="400px">
             <v-card :loading="load_vcard">
-              <v-card-text>
-                هل تريد حفظ  هذه المحضر في الأرشيف
-              </v-card-text>
+              <v-card-title class="blue lighten-5">
+                هل تريد حفظ هذا المحضر في الأرشيف
+              </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="ClosedialogArchive()"> لا </v-btn>
@@ -72,14 +93,13 @@
           </v-dialog>
       </v-toolbar>
     </template>
-
     <template v-slot:[`item.lien`]="{ item }">
       <v-chip
         @click="redirect(item.lien)"
         color="blue lighten-5"
         class="app-link"
-      >
-        <v-icon>mdi-download</v-icon>
+      >تصفح
+        <v-icon small>mdi-download</v-icon>
       </v-chip>
     </template>
 
@@ -111,14 +131,15 @@ import baseURL from "@/api/baseURL";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  props:{
-    idUser:Number
-  },
+
   data: () => ({
+    pvs:[],
+    msgErr:false,
     dialog: false,
-    search: "",
+    checkbox:false,
+    searchpv: "",
     load_vcard: false,
-    load_table: true,
+    load_table: false,
     headers: [
       {
         text: "رقم المحضر",
@@ -130,8 +151,7 @@ export default {
       { text: "تاريخ الاحالة", value: "dateMission", sortable: false },
       { text: "تصفح", value: "lien", sortable: false },
       { text: "القرار", value: "descision", sortable: false },
-      { text: "تغيير القرار", value: "actions", sortable: false },
-      { text: "تغيير الاحالة", value: "move_affect", sortable: false }
+      { text: "تغيير القرار", value: "actions", sortable: false }
     ],
 
     userhaspvs: {
@@ -143,27 +163,32 @@ export default {
     },
     dialogArchive: false,
     validform:true,
-    nameRules: [(v) => !!v || "حقل ضروري"],
+    nameRules: [(v) => !!v || "حقل إجباري"],
+
+    switch1:true,
+    numapi:2,
+    stringstatus:"المحاضر المعالجة"
   }),
   watch: {
     dialog(val) {
       val || this.close();
     },
-    pvs() {
-      if (this.plaint != []) {
-        this.load_table = false;
-      }
-    },
+    switch1(){
+      if(this.switch1) {
+        this.numapi = 2;
+        this.stringstatus="المحاضر المعالجة";
+        this.pvs_a_confirmer();
+      }else{
+        this.numapi = 1;
+        this.stringstatus="المحاضر  غير مدروسة";
+        this.pvs_a_confirmer();
+      }   
+     }
   },
   computed: {
-    ...mapGetters(["getAllpvs_vice"]),
-    pvs() {
-      return this.getAllpvs_vice;
-    },
   },
 
   methods: {
-    ...mapActions(["pvsDeVice"]),
     color_desc(val){
       if(val == 1) return 'yellow lighten-1'; 
       else return 'green lighten-1';
@@ -180,7 +205,6 @@ export default {
       fileLink.click();
     },
 
-    
 
     close() {
       this.userhaspvs.descision = '';
@@ -196,28 +220,32 @@ export default {
       this.dialog = true;
     },
 
-    valider_edite_descision() {
+    valider_edite_descision_pvs() {
+      if(this.checkbox){
+        this.userhaspvs.traitID = 4;
+      }
       this.load_vcard = true;
       axios
         .post(
           baseURL.api + "/users/haspvs/descision/" + this.userhaspvs.idpvs,
-          {
-            userhaspvs: this.userhaspvs,
-          },
+          {userhaspvs: this.userhaspvs,},
           {
             headers: { Authorization: `Bearer ${baseURL.token}` },
-          }
-        )
-        .then((rep) => {
+          })
+          .then((rep) => {
           if (rep.status == 200) {
+            this.pvs_a_confirmer();
             this.close();
             this.load_vcard = false;
+            //this.msgSuc=true;
           } else {
             this.load_vcard = false;
+            this.msgErr=true;
           }
         })
         .catch((erreur) => {
           this.load_vcard = false;
+          this.msgErr=true;
         });
     },
 
@@ -244,7 +272,7 @@ export default {
         )
         .then((rep) => {
           if (rep.status == 200 || rep.status == 201) {
-            this.pvsDeVice(this.idUser);
+            this.pvs_a_confirmer();
             this.load_vcard = false;
             this.dialogArchive = false;
           } else {
@@ -257,6 +285,24 @@ export default {
           this.dialogArchive = false;
         });
     },
+    pvs_a_confirmer(){
+      this.pvs=[];
+      this.load_table = true;
+        axios
+        .get(baseURL.api + "/users/haspvs/pvs_a_confirmer/"+this.numapi, {
+          headers: { Authorization: `Bearer ${baseURL.token}` },
+        })
+        .then((rep) => {
+          this.pvs = rep.data;
+          this.load_table = false;
+        });
   },
+  
+  },
+  mounted(){
+    this.pvs_a_confirmer();
+  }
+  
+  
 };
 </script>

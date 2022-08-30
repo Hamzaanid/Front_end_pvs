@@ -10,15 +10,16 @@
       no-data-text="لاتوجد شكايات"
     >
       <template v-slot:top>
-        
         <v-toolbar flat dense>
           <v-row no-gutters dense>
-            <v-toolbar-title class="light-blue lighten-5"
-              >الشكايات المحالة</v-toolbar-title
-            >
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-            <v-col cols="12" sm="6">
+            <v-switch class="mt-2 mr-6"
+              v-model="switch1"
+              color="green"
+              :label="`${stringstatus}`"
+            ></v-switch>
+          </v-row>
+          <v-row no-gutters dense>
+            <v-col cols="12" sm="6" class="mr-2">
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
@@ -82,6 +83,7 @@
           </v-dialog>
           
         </v-toolbar>
+       
       </template>
       <template v-slot:[`item.lien`]="{ item }">
         <v-chip @click="redirect(item.lien)" color="blue lighten-5">
@@ -149,13 +151,27 @@ export default {
     validform:true,// valider formulaire de descision
     nameRules: [(v) => !!v || "حقل إجباري"],
     msgErr:false,
+    // change plaint
+    switch1:true,
+    numapi:2,
+    stringstatus:"الشكايات المعالجة"
   }),
 
   watch: {
     dialog(val) {
       val || this.close();
     },
-   
+    switch1(){
+      if(this.switch1) {
+        this.numapi = 2;
+        this.stringstatus="الشكايات المعالجة";
+        this.plainte_a_confirmer();
+      }else{
+        this.numapi = 1;
+        this.stringstatus="الشكايات  غير مدروسة";
+        this.plainte_a_confirmer();
+      }   
+     }
   },
 
   methods: {
@@ -265,7 +281,7 @@ export default {
       this.plaint=[];
       this.load_table = true;
         axios
-        .get(baseURL.api + "/users/hasplaints/plaint_a_confirmer", {
+        .get(baseURL.api + "/users/hasplaints/plaint_a_confirmer/"+this.numapi, {
           headers: { Authorization: `Bearer ${baseURL.token}` },
         })
         .then((rep) => {
