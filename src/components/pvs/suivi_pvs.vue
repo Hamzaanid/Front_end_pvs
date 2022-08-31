@@ -149,6 +149,7 @@ export default {
       },
       { text: "تاريخ التسجيل", value: "dateEnregPvs", sortable: false },
       { text: "تاريخ الاحالة", value: "dateMission", sortable: false },
+      { text: "ممثل النيابة", value: "nameUser", sortable: false},
       { text: "تصفح", value: "lien", sortable: false },
       { text: "القرار", value: "descision", sortable: false },
       { text: "تغيير القرار", value: "actions", sortable: false }

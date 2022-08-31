@@ -132,11 +132,12 @@ export default {
         sortable: false,
         value: "referencePlaints",
       },
-      { text: "تاريخ التسجيل", value: "dateEnregPlaints", sortable: true },
-      { text: "تاريخ الاحالة", value: "dateMission", sortable: false },
-      { text: "تصفح", value: "lien", sortable: false },
-      { text: "القرار  ", value: "descision", sortable: false },
-      { text: "تغيير القرار", value: "actions", sortable: false },
+      { text: "تاريخ التسجيل", value: "dateEnregPlaints", sortable: true},
+      { text: "تاريخ الاحالة", value: "dateMission", sortable: false},
+      { text: "ممثل النيابة", value: "nameUser", sortable: false},
+      { text: "تصفح", value: "lien", sortable: false},
+      { text: "القرار  ", value: "descision", sortable: false},
+      { text: "تغيير القرار", value: "actions", sortable: false},
     ],
 
     userhasplaints: {
