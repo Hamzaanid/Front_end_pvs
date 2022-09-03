@@ -4,13 +4,13 @@ import HomeView from '../views/HomeView.vue'
 import plaintes from '../views/pages/plaintes/plaintes.vue'
 import pvs from '../views/pages/pvs/pvs.vue'
 import traiter from '../views/pages/Gestion_dossiers/affecter_dossier.vue'
-import suivi from '../views/pages/Gestion_dossiers/suivi_traitement.vue'
+//import suivi from '../views/pages/Gestion_dossiers/suivi_traitement.vue'
 import consulter_mes_dossiers from '../views/pages/Gestion_dossiers/consulter_mes_dossiers.vue'
 import statistique_dossiers from '../views/pages/Gestion_dossiers/statistique_dossiers.vue'
 import Admin_dossiers from '../views/pages/Gestion_dossiers/Admin_dossiers.vue'
 import Gestion_user from '../views/pages/Gestion_dossiers/Gestion_user.vue'
 import archive from '../views/pages/Gestion_dossiers/archive.vue'
-import statistique_vice from '../views/pages/Gestion_dossiers/statistique_vice.vue'
+//import statistique_vice from '../views/pages/Gestion_dossiers/statistique_vice.vue'
 import pvs_enquete from '../views/pages/Dossiers_enquete/pvs_enquete.vue'
 import descision_enquete from '../views/pages/Dossiers_enquete/descision_enquete.vue'
 import pvs_enqueteJuge from '../views/pages/Dossiers_enquete/Dossiers_enqueteJuge.vue'
@@ -100,14 +100,6 @@ const routes = [
         path: 'archive',
         name: 'archive',
         component:archive,
-        meta: {
-          middleware: [Middlewares.auth]
-        }
-      },
-      {
-        path: 'statistique_v',
-        name: 'statistique_vice',
-        component: statistique_vice,
         meta: {
           middleware: [Middlewares.auth]
         }

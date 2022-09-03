@@ -123,12 +123,6 @@ export default {
           route: "/statistique",
           
         },
-        { show:this.$store.state.user.statistic_p,
-          action: "mdi-file-chart",
-          title: "إحصائيات خاصة",
-          route: "/statistique_v",
-          
-        },
         { show:this.$store.state.user.gestDossiers,
           action: "mdi-folder-cog",
           title: " إدارة المرفقات",

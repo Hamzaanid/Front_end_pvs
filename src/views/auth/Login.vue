@@ -18,10 +18,10 @@
         <v-form ref="loginForm">
           <v-text-field
             label="إسم المرور"
-            name="nom"
+            name="email"
             dense
             prepend-inner-icon="mdi-email"
-            v-model="user.nom" 
+            v-model="user.email" 
           />
           <v-text-field
             id="password"
@@ -50,7 +50,7 @@ export default {
       msgErr: false,
       load: false,
       user: {
-        nom: "",
+        email: "",
         password: "",
       },
     };

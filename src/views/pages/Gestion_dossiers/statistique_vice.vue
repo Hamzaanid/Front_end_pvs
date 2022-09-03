@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card :loading="load">
+        <v-card :loading="load" flat>
              <v-toolbar class="smallnavbar mb-3" flat height="34px">
         <v-toolbar-title class="darkgrey--text text-h5"
            >  إحصائيات   </v-toolbar-title
@@ -10,8 +10,8 @@
         <v-alert dense type="error" v-model="msgErr" @click="msgErr=false"
           > تأكد من صحة المعلومات أو شبكة الأنترنيت 
           </v-alert>
-            <v-card class="ma-1 pa-1 pb-3">
-                    <div class="text-h5 pr-2 mb-1"> المحاضر</div>k
+            <v-card class="ma-1 pb-5" flat>
+                    <div class="blue lighten-5 text-h6 pr-2 mb-1"> المحاضر</div>
                 <v-row no-gutters justify-md="start">
                 <v-col cols="12" sm="5" class="mx-2">
                 <v-card class=" px-2" flat color="green lighten-2" dense>
@@ -45,8 +45,8 @@
                 
             </v-card>
 
-            <v-card class="ma-1 pa-1 pb-3">
-                <div class="text-h5 pr-2 mb-1"> الشكايات</div>
+            <v-card class="ma-1 pb-3 mb-0" flat>
+                <div class="blue lighten-5 text-h5 pr-2 mb-1"> الشكايات</div>
                 <v-row no-gutters justify-md="start">
                 <v-col cols="12" sm="5" class="mx-2">
                 <v-card  flat class="px-2" color="green lighten-2" dense>
@@ -114,7 +114,7 @@ export default {
           this.load = false;
         });
 
-        axios.get(baseURL.api+"/users/hasplaints/statistic_vice/"+this.userid,
+        axios.get(baseURL.api+"/users/hasplaints/statistic_vice/0",
         {headers: {   Authorization: `Bearer ${baseURL.token}`}
         }).then(rep=>{
           if(rep.status == 200 || rep.status==201)

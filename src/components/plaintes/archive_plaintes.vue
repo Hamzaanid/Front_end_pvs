@@ -181,6 +181,11 @@ export default {
           }
     }
   },
+  watch:{
+    msgErr(val){
+             !val || setTimeout(()=>{ this.msgSuc=false; this.msgErr=false; },2000)
+          },
+  },
 
   methods: {
     cherArchplaint(){

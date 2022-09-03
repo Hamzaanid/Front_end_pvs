@@ -11,7 +11,7 @@
       </v-tab>
       <v-tab class="text-h6 mx-10">
         <v-icon right x-small>mdi-folder-open</v-icon>
-        kklklks
+        ملفات التحقيق
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">

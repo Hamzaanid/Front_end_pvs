@@ -72,7 +72,7 @@
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <v-btn
-      :disabled="item.traitID == 1 ? false : true"
+      :disabled="item.traitID >= 1 ? true : false"
         small
         color="blue lighten-5"
         @click="editItem(item)"
@@ -103,6 +103,7 @@
               dense
               outlined
               required
+              disabled
             >
             </v-select>
           </v-col>

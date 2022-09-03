@@ -15,7 +15,7 @@ const state = {
         suivi:false,
         etude:false,
         statistic:false,
-        statistic_p:false,
+        statistic_p:false, // statistique khasssa
         gestDossiers:false,
         archive:true,
         comptes:false,
@@ -29,6 +29,7 @@ const getters = {
 }
 
 const mutations = {
+    userInfo(state,data){state.userDetails = data;},// userDetails
     profileBureau(state){
         state.dossiers = true;
       },
@@ -150,8 +151,9 @@ const actions = {
             }
         });
     },
-    profile(ctx,role){
-        switch(role) {
+    profile(ctx,data){
+        ctx.commit('userInfo',data);
+        switch(data.role.nom) {
             case "user": { 
                      ctx.commit('profileBureau');
                           break;

@@ -1,6 +1,10 @@
 <template>
   <div class="home">
-    <app_navbar/>
+    <v-dialog v-model="dialog" persistent max-width="400px">
+      <v-card :loading="load" class="pa-2">
+      </v-card>
+    </v-dialog>
+    <app_navbar v-if="navbar"/>
     <v-main class="ma-6">
       <router-view />
     </v-main>
@@ -16,24 +20,28 @@ import { mapActions } from 'vuex';
             app_navbar  
       },
       data(){
-        return { }
+        return {
+          navbar:false,
+          dialog:true,
+          load:true,
+         }
       },
       
-    created(){
+      beforeCreate(){
       baseURL.token = localStorage.getItem("token");
-   /*   this.dialog = true;
+      this.dialog = true;
       axios
       .get(baseURL.api + "/users/profile", {
         headers: { Authorization: `Bearer ${baseURL.token}` },
       })
       .then((rep) => {
-        this.profile(rep.data.role.nom);
+        this.profile(rep.data);
+        this.navbar = true;
         this.dialog = false;
-        this.shownavbar = true;
       }).catch(err=>{
         localStorage.removeItem('token');
         this.$router.push('login');
-      }); */
+      });
     },
     methods:{
       ...mapActions('user', ['profile'])

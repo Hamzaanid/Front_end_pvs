@@ -80,7 +80,7 @@
           label="تأكيد كلمة السر "
           :rules="[
               () => !!password || 'ضروري',
-              () => password == this.user.password || 'خطأ',
+              () => password == this.user.password || 'غير صحيح',
               
             ]"
           required
@@ -229,7 +229,6 @@ import baseURL from '@/api/baseURL';
         })
         .then((rep) => {
           if (rep.status == 200 || rep.status == 201) {
-            console.log(rep.data);
             this.reset();
             this.file = null;
             this.loadValid=false;

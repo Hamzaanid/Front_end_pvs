@@ -2,19 +2,32 @@
   <v-data-table
     :headers="headers"
     :items="user"
+    :search="searchuser"
     no-data-text="معلومات غير متاحة"
-    sort-by="numUser"
-    class="elevation-1 font-weight-black text-h7"
+    class="elevation-1 font-weight-black text-h6"
     hide-default-footer
     :loading="table_vide"
     loading-text="إنتظر قليلا"
   >
     <template v-slot:top>
-      <v-btn color="blue lighten-4 ma-1" x-small @click="getUser()">refresh</v-btn>
+      <v-row no-gutters>
+        <v-col cols="12" sm="6">
+          <v-btn color="blue lighten-4 ma-1" x-small @click="getUser()">refresh</v-btn>
+        </v-col>
+        <v-col cols="12" sm="4">
+        <v-text-field
+          v-model="searchuser"
+          append-icon="mdi-magnify"
+          label="إسم المستخدم"
+          single-line
+          dense
+        ></v-text-field>
+        </v-col>
+      </v-row>
+      
       <v-toolbar class="smallnavbar mb-3" flat height="34px">
         <v-toolbar-title class="darkgrey--text text-h5">
-          المستخدمين</v-toolbar-title
-        >
+          المستخدمين</v-toolbar-title>
       </v-toolbar>
           <v-alert dense type="error" v-model="msgErr" @click="msgErr=false"
           > تأكد من صحة المعلومات أو شبكة الأنترنيت 
@@ -141,6 +154,7 @@ export default {
     table_vide: true,
     load_pop_edit: false,
     load_pop_delete: false,
+    searchuser:'',
     Role: [],
     headers: [
       { text: "إسم المستخدم", align: "start", sortable: true, value: "nom" },
