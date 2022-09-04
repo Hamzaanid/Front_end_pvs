@@ -136,14 +136,14 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       },
-      {
+   /*   {
         path: 'newSuivi',
         name: 'newSuivi',
         component: newSuivi_traite,
         meta: {
           middleware: [Middlewares.auth]
         }
-      }
+      }*/
     ]
   },
   {
@@ -153,6 +153,7 @@ const routes = [
     meta: {
       middleware: [Middlewares.guest]
     }
+    
   },
   
 ]

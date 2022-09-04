@@ -8,9 +8,11 @@ const state = {
   // data of drawer        
         dossiers:false, // plaint et pvs
         decision_enquete:false,
-        enquete:false, // pvs enquete
+        enquete:false, // pvs enquete ===>> pour ajouter dossier
+
         enqueteVice:false,
         juge_enquete:false,
+
         affectation:false,
         suivi:false,
         etude:false,
@@ -40,7 +42,7 @@ const mutations = {
     },
     profileProc(state){
         state.dossiers=true; // plaint et pvs
-        state.enquete=false;  //state.enqueteVice=true;
+        //state.enquete=false;  //state.enqueteVice=true;
         state.decision_enquete=true;
         state.affectation=true;
         state.suivi=true;
@@ -50,7 +52,7 @@ const mutations = {
     },
     profileAdmin(){
         state.dossiers=true; // plaint et pvs
-        state.enquete=true;   state.enqueteVice=true;
+        state.enquete=true;  // state.enqueteVice=true;
         state.decision_enquete=true;
         state.affectation=true;
         state.suivi=true;

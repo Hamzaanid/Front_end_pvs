@@ -38,13 +38,27 @@ import { mapActions } from 'vuex';
         this.profile(rep.data);
         this.navbar = true;
         this.dialog = false;
+       // console.log(this.$router.currentRoute.name)
+         if(this.nestedMiddlware(rep.data.role.nom)==0){
+          this.$router.push('login');
+         }
       }).catch(err=>{
         localStorage.removeItem('token');
         this.$router.push('login');
       });
     },
     methods:{
-      ...mapActions('user', ['profile'])
+      ...mapActions('user', ['profile']),
+      nestedMiddlware(role){
+        let nomRoute = this.$router.currentRoute.name;
+        if(role == "admin" || role == "proc"){
+          return 1;
+        }else{
+          if(nomRoute == "suivi" || nomRoute=="GesyionUser" || nomRoute=="adminDossiers" || nomRoute=="traiter"){
+            return 0;
+          }
+        }
+      }
     },
    
   

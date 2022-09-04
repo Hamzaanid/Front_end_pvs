@@ -63,6 +63,7 @@
         <v-chip
           small
           @click="redirect(item.lien)"
+          color="blue lighten-4"
         >
            تصفح  الملتمس  
           <v-icon small> mdi-download</v-icon>
@@ -73,10 +74,12 @@
           small
           @click="redirectDesc(item.lienDescision)"
           v-show="item.traiter"
+          :color="item.traiter == 1 ? 'green' :'red' "
         > تصفح القرار  
         <v-icon small>mdi-download</v-icon>
         </v-chip>
         <v-chip small v-show="!item.traiter"
+        :color="item.traiter == 1 ? 'green' :'red'"
         @click="openDialog(item)">
         تحميل القرار
         <v-icon small>mdi-cloud-upload</v-icon>
