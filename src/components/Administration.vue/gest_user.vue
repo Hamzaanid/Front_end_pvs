@@ -5,7 +5,6 @@
     :search="searchuser"
     no-data-text="معلومات غير متاحة"
     class="elevation-1 font-weight-black text-h6"
-    hide-default-footer
     :loading="table_vide"
     loading-text="إنتظر قليلا"
   >

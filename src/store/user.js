@@ -34,11 +34,13 @@ const mutations = {
     userInfo(state,data){state.userDetails = data;},// userDetails
     profileBureau(state){
         state.dossiers = true;
+        state.archive = true;
       },
     profileVice(state){
         state.etude = true;
         state.statistic_p = true;
         state.enqueteVice = true;
+        state.archive = true;
     },
     profileProc(state){
         state.dossiers=true; // plaint et pvs
@@ -49,6 +51,7 @@ const mutations = {
         state.etude=true;
         state.statistic=true; //state.statistic_p=true;
         state.gestDossiers=true;
+        state.archive = true;
     },
     profileAdmin(){
         state.dossiers=true; // plaint et pvs
@@ -59,13 +62,16 @@ const mutations = {
         state.etude=true;
         state.statistic=true;  state.statistic_p=true;
         state.gestDossiers=true; state.comptes = true;
+        state.archive = true;
     },
     profileJugeEnquete(state){
-        state.juge_enquete = true;
+        state.juge_enquete = true; // dossiers enquete
+        state.archive = false;
       },
       profileF_enquete(state){
         state.enquete = true; // pvs enquete
         state.decision_enquete=true;
+        state.archive = true;
       },
 
     setLoggedIn(state, payload) {
@@ -88,6 +94,7 @@ const mutations = {
         state.archive=true;
         state.comptes=false;
         state.decision_enquete = false;
+        state.archive = false;
     }
 };
 

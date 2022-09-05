@@ -171,7 +171,7 @@ import baseURL from '@/api/baseURL';
           nom:'',
           email:'',
           password:'',
-          active:false,
+          active:true,
           numUser:'',
           idRole:null
       },

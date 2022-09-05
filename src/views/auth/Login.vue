@@ -1,9 +1,12 @@
 <template>
   <div>
+    <v-row class="mb-15">
+      <v-col cols="12" sm="12" class="my-12"></v-col>
+    </v-row>
     <v-card
       class="overflow-hidden mx-auto mt-15"
       color="grey lighten-5"
-      max-width="40%"
+      max-width="30%"
       elevation="2"
       outlined
     >

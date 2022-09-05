@@ -21,16 +21,18 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer height="485px" clipped right v-model="drawer" app class="ma-4 mb-5">
+    <v-navigation-drawer height="80%" clipped right v-model="drawer" app class="ma-4 mb-5">
       <v-card flat outlined>
         <router-link to="" style="text-decoration: none" class="pa-0 ma-0">
           <v-icon size="50px" class="d-flex justify-center">
             mdi-account-circle-outline
           </v-icon>
         </router-link>
+        
         <v-card-text
           class="d-flex justify-center px-3 py-0 ma-0 font-weight-black"
-          > {{ username }}</v-card-text
+          >السيد (ة):
+           {{ username }}</v-card-text
         >
       </v-card>
 
