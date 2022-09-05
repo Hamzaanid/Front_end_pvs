@@ -87,6 +87,7 @@ const mutations = {
         state.gestDossiers=false;
         state.archive=true;
         state.comptes=false;
+        state.decision_enquete = false;
     }
 };
 
