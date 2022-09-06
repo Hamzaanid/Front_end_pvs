@@ -136,7 +136,15 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       },
-   /*   {
+      {
+        path: 'modifierPassword',
+        name: 'modifierPassword',
+        component: () => import(/* webpackChunkName: "rogin" */ '../views/auth/Modifier_password.vue'),
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      }
+         /*   {
         path: 'newSuivi',
         name: 'newSuivi',
         component: newSuivi_traite,

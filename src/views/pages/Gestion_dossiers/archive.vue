@@ -17,10 +17,6 @@
       أرشيف الشكايات 
       </v-tab>
 
-      <v-tab class="text-h6 mx-10">
-        تغيير كلمة السر 
-      </v-tab>
-
        </v-tabs>
     <v-tabs-items v-model="tab">
 
@@ -33,10 +29,6 @@
       <archive_plaintes></archive_plaintes>
       </v-tab-item>
 
-      <v-tab-item>
-        <Modifier_password></Modifier_password>
-      </v-tab-item>
-
       </v-tabs-items>
       
 
@@ -46,13 +38,11 @@
 <script>
 import Archive_plaintes from '@/components/plaintes/archive_plaintes.vue';
 import Archive_pvs from '@/components/pvs/archive_pvs.vue';
-import Modifier_password from '../../auth/Modifier_password.vue';
 
   export default {
     components: {
     Archive_plaintes,
     Archive_pvs,
-    Modifier_password
 },
     data() {
       return {

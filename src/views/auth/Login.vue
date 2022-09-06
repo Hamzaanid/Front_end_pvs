@@ -1,28 +1,39 @@
 <template>
   <div>
-    <v-row class="mb-15">
-      <v-col cols="12" sm="12" class="my-12"></v-col>
+    <v-row class="mb-10">
+      <v-col cols="12" sm="12" class="my-8"></v-col>
     </v-row>
     <v-card
       class="overflow-hidden mx-auto mt-15"
-      color="grey lighten-5"
-      max-width="30%"
+      max-width="35%"
       elevation="2"
       outlined
     >
-      <v-toolbar flat color="cssgrad" class="py-200">
-        <v-icon right>mdi-account</v-icon>
-        <v-toolbar-title>تسجيل الدخول </v-toolbar-title>
-      </v-toolbar>
+    <v-card-title class=" cssgrad pb-0" >
+         <v-flex class="text-center">
+                  <v-img class="mx-auto"
+                  max-height="37px"
+                  src="../../assets/emblem.png"
+                  max-width="38px">
+                 </v-img>
+        </v-flex>
+    </v-card-title>
+    <v-toolbar flat dark
+       class="d-flex text-h6 justify-center cssgrad" 
+      >
+      النظام المحلي لتدبير المحاضر
+        
+       </v-toolbar>
+
       <v-alert type="error" dense v-model="msgErr" @click="msgErr = false"
         >تأكد من صحة المعلومات</v-alert
       >
       <v-card-text>
         <v-form ref="loginForm">
           <v-text-field
-            label="إسم المرور"
+            label="إسم المستخدم"
             name="email"
-            dense
+            dense outlined
             prepend-inner-icon="mdi-email"
             v-model="user.email" 
           />
@@ -30,6 +41,7 @@
             id="password"
             label="كلمة السر"
             name="password"
+            outlined dense
             type="password"
             prepend-inner-icon="mdi-lock"
             v-model="user.password"
@@ -38,7 +50,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="loginUser" color="primary" :loading="load">دخول</v-btn>
+        <v-btn  @click="loginUser"  dark class="blue lighten-2" :loading="load">
+          تسجيل الدخول</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -87,9 +100,7 @@ export default {
 
 <style>
 .cssgrad {
- background: rgb(9,47,45);
-background: -moz-linear-gradient(0deg, rgba(9,47,45,1) 3%, rgba(189,216,236,1) 3%, rgba(156,207,242,1) 32%);
-background: -webkit-linear-gradient(0deg, rgba(9,47,45,1) 3%, rgba(189,216,236,1) 3%, rgba(156,207,242,1) 32%);
-background: linear-gradient(0deg, rgba(9,47,45,1) 3%, rgba(189,216,236,1) 3%, rgba(156,207,242,1) 32%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#092f2d",endColorstr="#9ccff2",GradientType=1);}
+  background: rgb(255,255,255);
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,169,255,1) 0%, rgba(0,165,249,1) 1%, rgba(95,192,242,1) 17%, rgba(47,167,227,1) 100%);
+}
 </style>

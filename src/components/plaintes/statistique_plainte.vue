@@ -199,7 +199,7 @@ export default {
       stat(){
         this.loading=true;
         let token = localStorage.getItem("token");
-              axios.post('http://127.0.0.1:8000/api/plaint/statistique',{
+              axios.post(baseURL.api +'/plaint/statistique',{
                 cher:this.cher
               },{
               headers:  { Authorization: `Bearer ${token}` }
@@ -209,6 +209,8 @@ export default {
             this.display=true;
           }).catch(er=>{
               this.loading=false; 
+              this.display=true;
+              console.log(er)
             });
       }
     },

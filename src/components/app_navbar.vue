@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <v-icon>mdi-gavel</v-icon>
-        <span class="text-h6"> نظام تدبير القضايا الزجرية</span>
+        <span class="text-h6">  النظام المحلي لتدبير المحاضر</span>
       </v-toolbar-title>
       <v-spacer />
       <img
@@ -142,6 +142,11 @@ export default {
           title: "الأرشيف",
           route: "archive",  
         },
+        {  show:true,
+          action: "mdi-account",
+          title: "تدبير الحساب",
+          route: "modifierPassword",  
+        }
         
       ],
     };

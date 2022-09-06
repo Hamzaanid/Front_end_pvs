@@ -11,7 +11,7 @@
       >
         <template v-slot:top>
              <v-btn color="blue lighten-4 ma-1" x-small @click="pvs_a_confirmer_enquete()"
-            >refresh</v-btn>
+            >تحديث</v-btn>
           <v-toolbar flat dense>
            
             <v-row no-gutters dense>

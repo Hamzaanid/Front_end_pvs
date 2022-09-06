@@ -49,6 +49,7 @@
           small
           @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
+          dark
           :color="item.traiter == true ? 'green': 'red darken-4'"
         >
          {{ descision(item.traiter) }}

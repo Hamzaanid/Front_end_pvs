@@ -17,7 +17,7 @@
   >
   
   <template v-slot:top>
-   <v-btn color="blue lighten-4 ma-1" x-small @click="get_mes_plaintes()">refresh</v-btn>
+   <v-btn color="blue lighten-4 ma-1" x-small @click="get_mes_plaintes()">تحديث</v-btn>
   <v-dialog v-model="dialog" max-width="500px">
           <v-card :loading="load_vcard">
               <v-container>

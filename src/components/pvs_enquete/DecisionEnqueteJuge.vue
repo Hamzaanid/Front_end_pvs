@@ -72,6 +72,7 @@
        <template v-slot:[`item.desc`]="{item}">
          <v-chip
            small
+           dark
            @click="redirectDesc(item.lienDescision)"
            v-show="item.traiter"
            :color="item.traiter == 1 ? 'green' :'red' "

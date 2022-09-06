@@ -50,7 +50,7 @@
     <v-data-table
     :headers="headers"
     :items="plaint" no-data-text="معلومات غير متاحة"
-     class="elevation-1 "
+     class="elevation-1"
     hide-default-footer
     :loading="table_vide"
      loading-text="إنتظر قليلا"

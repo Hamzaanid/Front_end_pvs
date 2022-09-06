@@ -14,7 +14,7 @@
             <v-text-field
               type="password"
               v-model="user.lastPassword"
-              label="كلمة السر السابقة"
+              label="كلمة السر الحالية"
               dense
               outlined
               required

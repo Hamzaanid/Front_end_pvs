@@ -153,8 +153,9 @@
         { headers: { Authorization: `Bearer ${baseURL.token}` }
         }).then(async (rep) => {
           this.loadFile = false;
-          this.cherDossier = this.DescisionEnquete.NumDossier;
-          await this.chercher_dossier();
+        //  this.cherDossier = this.DescisionEnquete.NumDossier;
+         // await this.chercher_dossier();
+         this.onPageChange();
           this.dialog =false;
          })
          .catch((err) => {

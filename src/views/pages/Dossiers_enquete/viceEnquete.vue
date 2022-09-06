@@ -49,6 +49,8 @@
           small
           @click="redirectDesc(item.lienDescision)"
           :disabled="!item.traiter"
+          :color="item.traiter == 1 ? 'green' :'red' "
+          dark
         >
          {{ descision(item.traiter) }}
           <v-icon small> mdi-download</v-icon>
