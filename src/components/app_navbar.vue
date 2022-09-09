@@ -131,6 +131,11 @@ export default {
           route: "/adminDossiers",
           
         },
+        {  show:this.$store.state.user.statistic_particul,
+          action: "mdi-file-chart",
+          title: "إحصائيات نوعية",
+          route: "statistique_particulier",  
+        },
         {  show:this.$store.state.user.comptes,
           action: "mdi-account-cog",
           title: "الحسابات",

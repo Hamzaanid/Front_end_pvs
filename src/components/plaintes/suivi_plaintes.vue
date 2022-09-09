@@ -145,7 +145,6 @@ export default {
       traitID: 2,
       lien: "",
       userID: null,
-
       idplainte: null, 
     },
     load_vcard:false,

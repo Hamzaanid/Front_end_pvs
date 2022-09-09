@@ -18,6 +18,7 @@ import viceEnquete from '../views/pages/Dossiers_enquete/viceEnquete.vue'
 import Middlewares from '../middlewares/'
 
 import newSuivi_traite from '../views/pages/Gestion_dossiers/new_suivi_traitement.vue'
+import statistique_particuliere from '../components/Administration/statistique_particuliere.vue'
 
 
 Vue.use(VueRouter)
@@ -137,6 +138,14 @@ const routes = [
         }
       },
       {
+        path: 'statistique_particulier',
+        name: 'statistique_particulier',
+        component: statistique_particuliere,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
+      {
         path: 'modifierPassword',
         name: 'modifierPassword',
         component: () => import(/* webpackChunkName: "rogin" */ '../views/auth/Modifier_password.vue'),
@@ -144,14 +153,6 @@ const routes = [
           middleware: [Middlewares.auth]
         }
       }
-         /*   {
-        path: 'newSuivi',
-        name: 'newSuivi',
-        component: newSuivi_traite,
-        meta: {
-          middleware: [Middlewares.auth]
-        }
-      }*/
     ]
   },
   {

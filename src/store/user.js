@@ -12,7 +12,7 @@ const state = {
 
         enqueteVice:false,
         juge_enquete:false,
-
+        statistic_particul:false, // des users pvs
         affectation:false,
         suivi:false,
         etude:false,
@@ -35,6 +35,12 @@ const mutations = {
     profileBureau(state){
         state.dossiers = true;
         state.archive = true;
+      },
+      profileUserPvs(state){
+        state.dossiers = true;
+        state.archive = true;
+        state.statistic_particul = true;
+
       },
     profileVice(state){
         state.etude = true;
@@ -95,6 +101,7 @@ const mutations = {
         state.comptes=false;
         state.decision_enquete = false;
         state.archive = false;
+        state.statistic_particul =false;
     }
 };
 
@@ -109,34 +116,8 @@ const actions = {
                 ctx.commit('setLoggedIn',true)
                 ctx.commit('setUserDetails',response.data)
                 resolve(response);
-
-                switch(response.data.role.nom) {
-                    case "user": { 
-                             ctx.commit('profileBureau');
-                                  break;
-                                  }
-
-                   case "vice_proc": { 
-                                    ctx.commit('profileVice');
-                                     break;
-                                        }
-                   case "proc": { 
-                                ctx.commit('profileProc');
-                                  break;
-                                  }
-                    case "admin": {
-                                ctx.commit('profileAdmin');
-                                    break;
-                                }
-                    case "f_enquête": { 
-                                        ctx.commit('profileF_enquete');
-                                            break;
-                                    }
-                    case "j_enquête": { 
-                                          ctx.commit('profileJugeEnquete');
-                                              break;
-                                        }                
-                     }                                  
+                ctx.commit('profile',response.data);
+              /*  switch(response.data.role.nom) */                              
         })
         .catch((error) => {
             reject(error);
@@ -188,7 +169,11 @@ const actions = {
             case "j_enquête": { 
                                   ctx.commit('profileJugeEnquete');
                                       break;
-                                }                
+                                }    
+           case "user_pvs": { 
+                            ctx.commit('profileUserPvs');
+                                break;
+                              }              
              }    
     }
 

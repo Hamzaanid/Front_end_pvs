@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import gest_user from '@/components/Administration.vue/gest_user.vue'
-import Add_compte from '@/components/Administration.vue/add_compte.vue'
+import gest_user from '@/components/Administration/gest_user.vue'
+import Add_compte from '@/components/Administration/add_compte.vue'
 
   export default {
   components: { gest_user, Add_compte },
