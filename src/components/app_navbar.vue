@@ -83,6 +83,12 @@ export default {
           
         },
         
+        {  show:this.$store.state.user.dossiers,
+          action: "mdi-bank-plus",
+          title: "المحاضر الجوابية",
+          route: "/pvs_reponse",
+          
+        },
         {   show:this.$store.state.user.affectation,
           action: "mdi-plus-thick",
           title: "الإحالات",

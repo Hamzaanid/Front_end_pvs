@@ -15,6 +15,7 @@ import pvs_enquete from '../views/pages/Dossiers_enquete/pvs_enquete.vue'
 import descision_enquete from '../views/pages/Dossiers_enquete/descision_enquete.vue'
 import pvs_enqueteJuge from '../views/pages/Dossiers_enquete/Dossiers_enqueteJuge.vue'
 import viceEnquete from '../views/pages/Dossiers_enquete/viceEnquete.vue'
+import pvs_reponse from '../views/pages/pvs/pvs_reponse.vue'
 import Middlewares from '../middlewares/'
 
 import newSuivi_traite from '../views/pages/Gestion_dossiers/new_suivi_traitement.vue'
@@ -44,6 +45,14 @@ const routes = [
         path: 'pvs',
         name: 'pvs',
         component: pvs,
+        meta: {
+          middleware: [Middlewares.auth]
+        }
+      },
+      {
+        path: 'pvs_reponse',
+        name: 'pvs_reponse',
+        component: pvs_reponse,
         meta: {
           middleware: [Middlewares.auth]
         }
