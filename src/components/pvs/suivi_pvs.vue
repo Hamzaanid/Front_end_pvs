@@ -3,7 +3,6 @@
   <v-data-table
     :headers="headers"
     :items="pvs"
-    hide-default-footer
     :search="searchpv"
     :loading="load_table"
     loading-text="إنتظر قليلا"

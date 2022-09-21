@@ -99,7 +99,7 @@
     <v-data-table v-show="switchplainte"
       :headers="headerspl"
       :items="plaint"
-      hide-default-footer
+      
       :loading="load_tableplnt"
       :search="search"
       loading-text="إنتظر قليلا"
@@ -227,7 +227,7 @@
     v-show="switchpvs"
     :headers="headers"
     :items="pvs"
-    hide-default-footer
+    
     :search="searchpv"
     :loading="load_tablepv"
     loading-text="إنتظر قليلا"
@@ -364,7 +364,7 @@
     v-show="switchdossier"
     :headers="headers"
     :items="pvs_enquete"
-    hide-default-footer
+    
     :search="search_enquete"
     :loading="load_tablepv"
     loading-text="إنتظر قليلا"

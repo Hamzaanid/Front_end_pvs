@@ -100,7 +100,7 @@
     :items="pvs"
     item-key="id" 
     no-data-text="معلومات غير متاحة"
-    show-select hide-default-footer
+    show-select
     class="elevation-1 mb-1"
   >
   <template v-slot:[`item.lien`]="{ item }">

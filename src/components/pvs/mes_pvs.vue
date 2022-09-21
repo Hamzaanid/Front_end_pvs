@@ -11,7 +11,6 @@
     :headers="headers"
     :items="pvs"
     :loading="load_tab"
-    hide-default-footer
     loading-text="إنتظر قليلا"
     no-data-text="لاتوجد محاضر"
   >

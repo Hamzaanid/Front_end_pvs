@@ -3,7 +3,6 @@
     <v-data-table
       :headers="headers"
       :items="plaint"
-      hide-default-footer
       :loading="load_table"
       :search="search"
       loading-text="إنتظر قليلا"

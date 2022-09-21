@@ -1,7 +1,6 @@
 <template>
    <div>
      <v-card>
-
       <v-data-table
       :headers="headers"
       :items="pvs_enquete"
