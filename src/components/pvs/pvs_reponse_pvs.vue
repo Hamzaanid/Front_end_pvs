@@ -65,7 +65,6 @@
           </template>
           <template v-slot:[`item.action`]="{ item }">
             <v-btn small color="blue lighten-5" @click="addpvsReponse(item)"
-            :disabled="item.traitID <= 1 ? false : true"
               ><v-icon left> mdi-pencil </v-icon>
               أضف
             </v-btn>
