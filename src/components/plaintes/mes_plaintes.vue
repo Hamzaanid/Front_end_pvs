@@ -55,8 +55,7 @@
     <template v-slot:[`item.actions`]="{item}">
         <v-chip 
       small 
-      @click="edit_item(item)"
-      :disabled="item.traitID == 2 ? true : false">
+      @click="edit_item(item)">
       القرار
       <v-icon small>mdi-pencil</v-icon>
       </v-chip>
@@ -98,6 +97,9 @@ export default{
             msgErr:false,
             msgSuc:false,
 
+            // pour update decision
+            updateDecision:0,
+
         }
     },
     watch:{
@@ -119,6 +121,7 @@ export default{
             this.userhasplaintes.lien ='';
           this.userhasplaintes.idplainte = -1;
           this.userhasplaintes.descision = '';
+          this.updateDecision = 0;
         },
 
         // navigate to document
@@ -135,12 +138,22 @@ export default{
           this.dialog= true;
           this.userhasplaintes.lien = item.lien;
           this.userhasplaintes.idplainte = item.id;
+          this.updateDecision = item.traitID;
         },
       
         valider_edite_descision(){
+          let typeApi = "";
+          if(this.updateDecision == 1){
+            typeApi = "signer_plainte";
+          }else{
+            if(this.updateDecision==2){
+              typeApi = "descision";
+            }
+          }
           this.load_vcard = true;
                 axios
-            .post(baseURL.api + "/users/hasplaints/signer_plainte/"+this.userhasplaintes.idplainte,{
+            .post(baseURL.api + "/users/hasplaints/"+typeApi+"/"
+                +this.userhasplaintes.idplainte,{
               userhasplaint:this.userhasplaintes
             },{
               headers: { Authorization: `Bearer ${baseURL.token}` },

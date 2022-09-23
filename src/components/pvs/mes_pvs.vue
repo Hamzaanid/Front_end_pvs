@@ -64,7 +64,7 @@
         <v-chip 
       small 
       @click="edit_item(item)"
-      :disabled="item.traitID == 1 ? false : true">
+      >
       القرار
       <v-icon small>mdi-pencil</v-icon>
       </v-chip>
@@ -108,6 +108,8 @@ export default{
             msgErr:false,
             msgSuc:false,
 
+            updateDecision:0,
+
         }
     },
     watch:{
@@ -131,6 +133,8 @@ export default{
           this.userhaspvs.idpvs = -1;
           this.userhaspvs.descision = '';
           this.checkbox = false;
+          this.updateDecision = 0;
+          this.userhaspvs.traitID = 2;
 
         },
 
@@ -146,16 +150,25 @@ export default{
         // changer la descision dans la table userhaspvs(descision)
         edit_item(item){
           this.dialog= true;
+          this.updateDecision = item.traitID;
           this.userhaspvs.lien = item.lien;
           this.userhaspvs.idpvs = item.id;
         },
         valider_Fait_descision(){
-          this.load_vcard = true;
+          this.load_vcard = true; let typeApi = "";
           if(this.checkbox){
             this.userhaspvs.traitID = 4;
           }
+          
+          if(this.updateDecision == 1){
+            typeApi = "signer_pvs";
+          }else{
+            if(this.updateDecision==2 || this.updateDecision == 4 ){
+              typeApi = "descision";
+            }
+          }
          axios
-            .post(baseURL.api + "/users/haspvs/signer_pvs/"+this.userhaspvs.idpvs,{
+            .post(baseURL.api + "/users/haspvs/"+typeApi+"/"+this.userhaspvs.idpvs,{
               userhaspvs:this.userhaspvs
             },{
               headers: { Authorization: `Bearer ${baseURL.token}` },

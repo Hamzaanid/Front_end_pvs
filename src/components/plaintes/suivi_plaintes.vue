@@ -144,7 +144,7 @@ export default {
       traitID: 2,
       lien: "",
       userID: null,
-      idplainte: null, 
+      idplainte: null,
     },
     load_vcard:false,
     validform:true,// valider formulaire de descision
